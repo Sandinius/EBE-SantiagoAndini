@@ -1,0 +1,23 @@
+{
+  "name": "mi_repocitorio4_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sandinius/Entregas-de-backend-Santiago-Andini.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sandinius/Entregas-de-backend-Santiago-Andini/issues"
+  },
+  "homepage": "https://github.com/Sandinius/Entregas-de-backend-Santiago-Andini#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
