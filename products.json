@@ -1,0 +1,92 @@
+[
+  {
+    "id": "1",
+    "title": "Zapatillas deportivas",
+    "description": "Zapatillas cómodas y elegantes para cualquier actividad deportiva.",
+    "price": 59.99,
+    "thumbnail": "zapatillas.jpg",
+    "code": "ABC123",
+    "stock": 50
+  },
+  {
+    "id": "2",
+    "title": "Teléfono inteligente",
+    "description": "Teléfono de última generación con funciones avanzadas.",
+    "price": 699.99,
+    "thumbnail": "smartphone.jpg",
+    "code": "DEF456",
+    "stock": 30
+  },
+  {
+    "id": "3",
+    "title": "Portátil ultradelgado",
+    "description": "Portátil ligero y potente para la productividad en movimiento.",
+    "price": 999.99,
+    "thumbnail": "laptop.jpg",
+    "code": "GHI789",
+    "stock": 20
+  },
+  {
+    "id": "4",
+    "title": "Cámara digital profesional",
+    "description": "Cámara con sensor de alta resolución para fotografía y video de calidad.",
+    "price": 1499.99,
+    "thumbnail": "camera.jpg",
+    "code": "JKL012",
+    "stock": 15
+  },
+  {
+    "id": "5",
+    "title": "Auriculares inalámbricos",
+    "description": "Auriculares cómodos con tecnología inalámbrica de última generación.",
+    "price": 129.99,
+    "thumbnail": "headphones.jpg",
+    "code": "MNO345",
+    "stock": 25
+  },
+  {
+    "id": "6",
+    "title": "Smartwatch",
+    "description": "Reloj inteligente con seguimiento de actividad y notificaciones.",
+    "price": 199.99,
+    "thumbnail": "smartwatch.jpg",
+    "code": "PQR678",
+    "stock": 35
+  },
+  {
+    "id": "7",
+    "title": "Barra de sonido",
+    "description": "Barra de sonido premium para mejorar la experiencia de audio en el hogar.",
+    "price": 299.99,
+    "thumbnail": "soundbar.jpg",
+    "code": "STU901",
+    "stock": 10
+  },
+  {
+    "id": "8",
+    "title": "Robot aspiradora",
+    "description": "Robot inteligente para limpieza automática de suelos.",
+    "price": 449.99,
+    "thumbnail": "robot-vacuum.jpg",
+    "code": "VWX234",
+    "stock": 40
+  },
+  {
+    "id": "9",
+    "title": "Bicicleta de montaña",
+    "description": "Bicicleta resistente y versátil para aventuras en terrenos variados.",
+    "price": 799.99,
+    "thumbnail": "mountain-bike.jpg",
+    "code": "YZA567",
+    "stock": 5
+  },
+  {
+    "id": "10",
+    "title": "Altavoces Bluetooth",
+    "description": "Altavoces portátiles con conectividad Bluetooth para música en cualquier lugar.",
+    "price": 89.99,
+    "thumbnail": "bluetooth-speakers.jpg",
+    "code": "BCD890",
+    "stock": 15
+  }
+]
