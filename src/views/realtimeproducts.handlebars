@@ -1,0 +1,23 @@
+<div>
+   <h1>Pantalla para agregar productos</h1>
+
+   <form action="" method="post" enctype="multipart/form-data">
+        <label>Nombre de producto: </label> <input name="title" type="text" required/>
+        <label>Descripcion: </label> <input name="description" type="text" required/>
+        <label>Precio: </label> <input name="price" type="number" required/>
+        <label>Imágen</label> <input name="thumbnail" type="file" />
+        <label>Cantidad: </label> <input name="stock" type="number" required/>
+        <button type="submit">Agregar</button>
+    </form>
+    <div class="acomoda">
+{{#each productsindex}}
+    <div>
+        <p>ID: {{this.id}}</p>
+        <p>Producto: {{this.title}}</p>
+        <p>Precio: {{this.price}}</p>
+    </div>
+    {{/each}}
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

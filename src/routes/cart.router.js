@@ -16,8 +16,6 @@ cart.get('/:id',(req, res) => cartManager.getCartById2(req, res));
 cart.post('/:cid/product/:pid',(req, res) => {
   const idcart = req.params.cid;
   const idprod = req.params.pid;
-  console.log(idcart);
-  console.log(idprod);
   res.send(cartManager.addProductToCart(idcart, idprod))
 });
 

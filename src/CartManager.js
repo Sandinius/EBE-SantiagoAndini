@@ -11,7 +11,6 @@ class CartManager {
   
     generateUniqueId() {
       const idUnic = this.idCounter++;
-      console.log(idUnic);
       return idUnic.toString(36);
     }
     
@@ -101,12 +100,10 @@ class CartManager {
       try {
         const data = fs.readFileSync(this.fileName, 'utf8');
         this.cart = JSON.parse(data);
-        console.log('Products loaded from disk:', this.cart);
       const maxId = this.cart.reduce((max, product) => Math.max(max, parseInt(product.id, 36)), 0);
       this.idCounter = maxId + 1;
       const data2 = fs.readFileSync(this.productsinfo, 'utf8');
         this.product = JSON.parse(data2);
-        console.log('Products loaded from disk:', this.product);
       const maxId2 = this.cart.reduce((max, product) => Math.max(max, parseInt(product.id, 36)), 0);
       this.idCounter = maxId2 + 1;
       } catch (error) {

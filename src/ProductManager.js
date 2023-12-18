@@ -9,7 +9,6 @@ class ProductManager {
   
     generateUniqueId() {
       const idUnic = this.idCounter++;
-      console.log(idUnic);
       return idUnic.toString(36);
     }
     generateUnicCode() {
@@ -108,7 +107,6 @@ class ProductManager {
       try {
         const data = fs.readFileSync(this.fileName, 'utf8');
         this.products = JSON.parse(data);
-        console.log('Products loaded from disk:', this.products);
       const maxId = this.products.reduce((max, product) => Math.max(max, parseInt(product.id, 36)), 0);
       this.idCounter = maxId + 1;
       } catch (error) {
