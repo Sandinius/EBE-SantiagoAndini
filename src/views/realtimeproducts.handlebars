@@ -9,6 +9,13 @@
         <label>Cantidad: </label> <input name="stock" type="number" required/>
         <button type="submit">Agregar</button>
     </form>
+
+    <h2>Eliminar Producto</h2>
+
+    <form id="deleteForm">
+        <label>ID del Producto:</label><input type="text" id="productId" name="productId" required>
+        <button type="button" onclick="deleteProduct()">Eliminar Producto</button>
+    </form>
     <div class="acomoda">
 {{#each productsindex}}
     <div>

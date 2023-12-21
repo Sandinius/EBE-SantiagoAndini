@@ -1,6 +1,9 @@
 import { Router } from 'express';
+import  express  from "express";
 import ProductManager from '../ProductManager.js';
 import multer from 'multer';
+
+
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -8,6 +11,8 @@ const upload = multer({ storage: storage });
 const productManager = new ProductManager();
 const product = Router();
 
+product.use(express.json());
+product.use(express.urlencoded({extended: true}));
 product.get('/', (req, res) => {
   const productsindex = productManager.products;
   res.render('index',{productsindex});
@@ -28,12 +33,13 @@ product.post('/realtimeproducts',upload.fields([{ name: 'thumbnail', maxCount: 1
 
 product.get('/realtimeproducts/:id',(req, res) => productManager.getProductById2(req, res));
 
-
+product.delete('/realtimeproducts', (req, res)=>{
+  let productId = req.body.id;
+  productManager.deleteProduct(productId);
+})
 product.delete('/realtimeproducts/:id', (req, res)=>{
-  let id = req.params.id;
+  let id = req.body.id;
   productManager.deleteProduct(id)
-  const productsindex = productManager.products;
-  res.render('realtimeproducts',{productsindex, style:'index.css'});
 })
 
 
