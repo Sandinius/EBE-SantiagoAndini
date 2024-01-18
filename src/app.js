@@ -16,7 +16,13 @@ mongoose.connect('mongodb+srv://santiagoandini2:123@clustercorder.bht8tuu.mongod
 
 const socketServer = new Server(httpServer);
 
-app.engine('handlebars', handlebars.engine());
+const hbs = handlebars.create({
+   runtimeOptions: {
+      allowProtoPropertiesByDefault: true
+   }
+})
+
+app.engine('handlebars', hbs.engine);
 app.set('views',__dirname+'/views');
 app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/public'));
@@ -25,7 +31,6 @@ app.use('/',product);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
-app.use('/api', product);
 app.use('/api/carts', cart);
 app.use('/api/chats', chat);
 socketServer.on('connection', socket =>{

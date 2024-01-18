@@ -1,11 +1,19 @@
 <div>
    <h1> Productos agregados hasta el momento</h1>
-{{#each productsindex}}
+{{#each products.docs}}
     <div>
         <p>{{this.title}}</p>
         <p>{{this.price}}</p>
 
     </div>
     {{/each}}
+    <br />
+    <br />
+    {{#if products.hasPrevPage}}
+    <button><a href={{products.prevLink}}>Pagina anterior</a></button>
+    {{/if}}
+    {{#if products.hasNextPage}}
+    <button> <a href={{products.nextLink}}>Pagina Siguiente</a></button>
+    {{/if}}
 </div>
 

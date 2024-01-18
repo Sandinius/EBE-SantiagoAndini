@@ -15,23 +15,78 @@ product.use(express.json());
 product.use(express.urlencoded({extended: true}));
 
 product.get('/',async (req, res) => {
-  const productsindex = productManager.products;
-  res.render('index',{productsindex});
+  let { type, limit, page, sort } = req.query;
+  if(type == undefined){
+    type = '';
+  }
+  if (limit == undefined){
+    limit = 10;
+  }
+  if (page == undefined){
+    page= 1;
+  }
+  if (sort == undefined || sort == ''|| sort == 1){
+  sort = {
+    price: 1,
+  };
+  }else{
+    sort = {
+      price: -1,
+    };
+  }
+
+  let products = ""; 
+  if(type == undefined || type == ""){
+     products = await productModel.paginate({},{limit:limit,page:page,sort:sort});
+  }else{
+     products = await productModel.paginate({type:type},{limit:limit,page:page,sort:sort});
+  }
+  console.log(products)
+  products.prevLink = `/?type=${type}&limit=${limit}&page=${+page - 1}`;
+  products.nextLink = `/?type=${type}&limit=${limit}&page=${+page + 1}`;
+  res.render('index',{products});
 });
 
 
 // Realtime products route
 
-product.get('/realtimeproducts', (req, res) => {
-  const productsindex = productManager.products;
-  res.render('realtimeproducts',{productsindex, style:'index.css'});
+product.get('/realtimeproducts', async (req, res) => {
+  let { type, limit, page, sort } = req.query;
+  if(type == undefined){
+    type = '';
+  }
+  if (limit == undefined){
+    limit = 10;
+  }
+  if (page == undefined){
+    page= 1;
+  }
+  if (sort == undefined || sort == ''|| sort == 1){
+    sort = {
+      price: 1,
+    };
+    }else{
+      sort = {
+        price: -1,
+      };
+    }
+  let products = ""; 
+  if(type == undefined || type == ""){
+     products = await productModel.paginate({},{limit:limit,page:page,sort:sort});
+  }else{
+     products = await productModel.paginate({type:type},{limit:limit,page:page,sort:sort});
+  }
+    products.prevLink = `/realtimeproducts?type=${type}&limit=${limit}&page=${+page - 1}`;
+    products.nextLink = `/realtimeproducts?type=${type}&limit=${limit}&page=${+page + 1}`;
+    console.log(products);
+  res.render('realtimeproducts',{products, style:'index.css'});
 });
 
 product.post('/realtimeproducts',upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
   const { title, description, price, stock } = req.body;
   const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0].buffer : null; 
   productManager.addProduct(title,description,price,thumbnail,stock);
-  const productsindex = productManager.products;
+  let products = await productModel.find().lean();
   const code = productManager.generateUnicCode(); 
   await productModel.create({
     title,
@@ -41,14 +96,14 @@ product.post('/realtimeproducts',upload.fields([{ name: 'thumbnail', maxCount: 1
     code,
     stock
   })
-  res.render('realtimeproducts',{productsindex, style:'index.css'});
+  res.render('realtimeproducts',{products, style:'index.css'});
 })
 
 product.get('/realtimeproducts/:id',async (req, res) => {
   let id = req.params.id;
-  const productsindex = productManager.products;
+  let products = await productModel.find().lean();
 
-  if(productsindex.some(product => product.id === id)){
+  if(products.some(product => product.id === id)){
   res.send(productManager.getProductById2(req, res))
 }else{
   let result = await productModel.find({_id:id})
@@ -70,7 +125,7 @@ product.delete('/realtimeproducts/:id', (req, res)=>{
 
 product.get('/products',async (req, res) => {
   try{
-    let products = await productModel.find();
+    let products = await productModel.find().lean();
     res.status(200).send({products})
   }
   catch(error){
@@ -82,14 +137,10 @@ product.get('/products',async (req, res) => {
 
 product.get('/products/:id',async(req, res) =>{
   let id = req.params.id;
-  const productsindex = productManager.products;
-
-  if(productsindex.some(product => product.id === id)){
-  res.send(productManager.getProductById2(req, res))
-}else{
-  let result = await productModel.find({_id:id})
+  
+  let result = await productModel.paginate({_id:id})
   res.send({status:"success", payload:result})
-}
+
 });
 
 product.post('/products',upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
@@ -113,10 +164,10 @@ product.put('/products/:id', upload.fields([{ name: 'thumbnail', maxCount: 1 }])
   let id = req.params.id;
   const { title, description, price, stock } = req.body;
   const productToUpdate = req.body;
-  const productsindex = productManager.products;
+  let products = await productModel.find().lean();
   const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0].buffer : null;  
 
-  if(productsindex.some(product => product.id === id)){
+  if(products.some(product => product.id === id)){
     res.send(productManager.updateProduct(id, title, description, price, thumbnail, stock))
   }else{
   let result = await productModel.updateOne({_id:id},productToUpdate)
@@ -126,9 +177,9 @@ product.put('/products/:id', upload.fields([{ name: 'thumbnail', maxCount: 1 }])
 
 product.delete('/products/:id',async (req, res)=>{
     let id = req.params.id;
-    const productsindex = productManager.products;
+    let products = await productModel.find().lean();
 
-    if(productsindex.some(product => product.id === id)){
+    if(products.some(product => product.id === id)){
     res.send(productManager.deleteProduct(id))
     }else{
     let result = await productModel.deleteOne({_id:id})

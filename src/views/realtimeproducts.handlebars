@@ -17,14 +17,22 @@
         <button type="button" onclick="deleteProduct()">Eliminar Producto</button>
     </form>
     <div class="acomoda">
-{{#each productsindex}}
+{{#each products.docs}}
     <div>
-        <p>ID: {{this.id}}</p>
+        <p>ID: {{this._id}}</p>
         <p>Producto: {{this.title}}</p>
         <p>Precio: {{this.price}}</p>
     </div>
     {{/each}}
     </div>
+    <br />
+    <br />
+    {{#if products.hasPrevPage}}
+    <button><a href={{products.prevLink}}>Pagina anterior</a></button>
+    {{/if}}
+    {{#if products.hasNextPage}}
+    <button> <a href={{products.nextLink}}>Pagina Siguiente</a></button>
+    {{/if}}
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/index.js"></script>
