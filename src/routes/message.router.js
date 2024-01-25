@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import  express  from "express";
 import { messagesModel } from '../dao/models/messages.model.js';
+import auth from '../app.js';
 
 
 const chat = Router();
@@ -9,7 +10,7 @@ chat.use(express.json());
 chat.use(express.urlencoded({extended: true}));
 
 
-chat.get('/', async (req, res)=>{
+chat.get('/',auth, async (req, res)=>{
     try{
         let messages = await messagesModel.find();
         res.status(200).send({messages})
@@ -21,11 +22,11 @@ chat.get('/', async (req, res)=>{
 });
 
 
-chat.get('/chat',async (req, res) => {
+chat.get('/chat',auth,async (req, res) => {
   res.render('chat');
 });
 
-chat.post('/chat',async (req, res) => {
+chat.post('/chat',auth,async (req, res) => {
     const {user, message} = req.body;
     console.log(req.body);
     

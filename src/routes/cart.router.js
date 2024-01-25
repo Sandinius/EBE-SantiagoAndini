@@ -3,13 +3,14 @@ import CartManager from '../dao/CartManager.js';
 import { cartModel } from '../dao/models/cart.model.js';
 import product from './product.router.js';
 import  express  from "express";
+import auth from '../app.js';
 
 const cartManager = new CartManager();
 const cart = Router();
 product.use(express.json());
 product.use(express.urlencoded({extended: true}));
 
-cart.get('/', async (req, res) => {
+cart.get('/', auth,async (req, res) => {
 
   try{
     let carts = await cartModel.find().lean();
@@ -22,7 +23,7 @@ cart.get('/', async (req, res) => {
 
 });
 
-cart.post('/:pid',async(req, res) => {
+cart.post('/:pid',auth,async(req, res) => {
   const idprod = req.params.pid;
 
   let carts = await cartModel.find().lean();
@@ -32,9 +33,9 @@ await cartModel.create({
   })
 });
 
-cart.get('/:id',(req, res) => cartManager.getCartById2(req, res));
+cart.get('/:id',auth,(req, res) => cartManager.getCartById2(req, res));
 
-cart.put('/:cid/product/:pid', async (req, res) => {
+cart.put('/:cid/product/:pid', auth,async (req, res) => {
   const idcart = req.params.cid;
   const idprod = req.params.pid;
   console.log(idcart)

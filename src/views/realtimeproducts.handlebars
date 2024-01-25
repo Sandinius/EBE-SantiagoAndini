@@ -1,6 +1,14 @@
 <div>
    <h1>Pantalla para agregar productos</h1>
 
+{{#if users.userRol}}
+    <p>Bienvenido Usuario  {{users.mail}}</p>
+    {{/if}}
+    {{#if users.admin}}
+    <p>Bienvenido Administrador  {{users.mail}}</p>
+    {{/if}}
+<button type:"button"><a href="/logout">Desconectarse</a></button>
+
    <form action="" method="post" enctype="multipart/form-data">
         <label>Nombre de producto: </label> <input name="title" type="text" required/>
         <label>Descripcion: </label> <input name="description" type="text" required/>

@@ -3,6 +3,7 @@ import  express  from "express";
 import ProductManager from '../dao/ProductManager.js';
 import multer from 'multer';
 import { productModel } from '../dao/models/products.model.js';
+import auth from '../app.js';
 
 
 const storage = multer.memoryStorage();
@@ -14,7 +15,7 @@ const product = Router();
 product.use(express.json());
 product.use(express.urlencoded({extended: true}));
 
-product.get('/',async (req, res) => {
+product.get('/productsview',auth,async (req, res) => {
   let { type, limit, page, sort } = req.query;
   if(type == undefined){
     type = '';
@@ -50,7 +51,10 @@ product.get('/',async (req, res) => {
 
 // Realtime products route
 
-product.get('/realtimeproducts', async (req, res) => {
+product.get('/realtimeproducts',auth, async (req, res) => {
+  let users = req.session
+  console.log(users)
+
   let { type, limit, page, sort } = req.query;
   if(type == undefined){
     type = '';
@@ -78,11 +82,12 @@ product.get('/realtimeproducts', async (req, res) => {
   }
     products.prevLink = `/realtimeproducts?type=${type}&limit=${limit}&page=${+page - 1}`;
     products.nextLink = `/realtimeproducts?type=${type}&limit=${limit}&page=${+page + 1}`;
-    console.log(products);
-  res.render('realtimeproducts',{products, style:'index.css'});
+    console.log(products.docs[0].title)
+
+  res.render('realtimeproducts',{products, users, style:'index.css'});
 });
 
-product.post('/realtimeproducts',upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
+product.post('/realtimeproducts',auth,upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
   const { title, description, price, stock } = req.body;
   const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0].buffer : null; 
   productManager.addProduct(title,description,price,thumbnail,stock);
@@ -96,10 +101,10 @@ product.post('/realtimeproducts',upload.fields([{ name: 'thumbnail', maxCount: 1
     code,
     stock
   })
-  res.render('realtimeproducts',{products, style:'index.css'});
+  res.render('realtimeproducts',auth,{products, style:'index.css'});
 })
 
-product.get('/realtimeproducts/:id',async (req, res) => {
+product.get('/realtimeproducts/:id',auth,async (req, res) => {
   let id = req.params.id;
   let products = await productModel.find().lean();
 
@@ -111,11 +116,11 @@ product.get('/realtimeproducts/:id',async (req, res) => {
 }
 });
 
-product.delete('/realtimeproducts', (req, res)=>{
+product.delete('/realtimeproducts',auth, (req, res)=>{
   let productId = req.body.id;
   productManager.deleteProduct(productId);
 })
-product.delete('/realtimeproducts/:id', (req, res)=>{
+product.delete('/realtimeproducts/:id',auth, (req, res)=>{
   let id = req.params.id;
   productManager.deleteProduct(id)
 })
@@ -123,7 +128,7 @@ product.delete('/realtimeproducts/:id', (req, res)=>{
 
 //Products Routes
 
-product.get('/products',async (req, res) => {
+product.get('/products',auth,async (req, res) => {
   try{
     let products = await productModel.find().lean();
     res.status(200).send({products})
@@ -135,7 +140,7 @@ product.get('/products',async (req, res) => {
 });
 
 
-product.get('/products/:id',async(req, res) =>{
+product.get('/products/:id',auth,async(req, res) =>{
   let id = req.params.id;
   
   let result = await productModel.paginate({_id:id})
@@ -143,7 +148,7 @@ product.get('/products/:id',async(req, res) =>{
 
 });
 
-product.post('/products',upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
+product.post('/products',auth,upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
     const { title, description, price, stock } = req.body;
     const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0].buffer : null;   
     const code = productManager.generateUnicCode(); 
@@ -160,7 +165,7 @@ product.post('/products',upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,as
   });
 
 
-product.put('/products/:id', upload.fields([{ name: 'thumbnail', maxCount: 1 }]),async(req, res) =>{
+product.put('/products/:id',auth, upload.fields([{ name: 'thumbnail', maxCount: 1 }]),async(req, res) =>{
   let id = req.params.id;
   const { title, description, price, stock } = req.body;
   const productToUpdate = req.body;
@@ -175,7 +180,7 @@ product.put('/products/:id', upload.fields([{ name: 'thumbnail', maxCount: 1 }])
   }
 })
 
-product.delete('/products/:id',async (req, res)=>{
+product.delete('/products/:id',auth,async (req, res)=>{
     let id = req.params.id;
     let products = await productModel.find().lean();
 
