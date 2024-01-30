@@ -20,3 +20,5 @@ function deleteProduct() {
         window.location.href = '/realtimeproducts';
     });
 }
+
+

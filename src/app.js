@@ -1,5 +1,5 @@
 import  express  from "express";
-import __dirname from "./utils.js";
+import __dirname, { createHash, isValidPassword } from "./utils.js";
 import handlebars from "express-handlebars";
 import product from "./routes/product.router.js";
 import cart from "./routes/cart.router.js";
@@ -13,8 +13,9 @@ import FileStore  from "session-file-store";
 import MongoStore from "connect-mongo";
 import Validates from "./dao/validate.js";
 import { userModel } from "./dao/models/user.model.js";
-
-
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
+import router from "./routes/github.routes.js";
 
 const fileStorage = FileStore(session);
 export const app = express();
@@ -36,7 +37,7 @@ const hbs = handlebars.create({
 
 
 export default function auth(req,res,next){
-   if (req.session?.admin || req.session?.userRol){
+   if (req.session.user?.admin || req.session.user?.userRol){
       return next()
    }
    return res.status(401).send('Debes estar logueado para entrar a esta pagina')
@@ -46,7 +47,7 @@ export default function auth(req,res,next){
  async function serchUsers(mail, password){
    let users = await userModel.find().lean();
    users.forEach(element => {
-       if (  element.mail === mail || element.password === password ){
+       if (  element.mail === mail || isValidPassword(element,password) ){
           return true;
        }else{
            return false;
@@ -68,6 +69,10 @@ app.use(session({
    resave:false,
    saveUninitialized:false
 }))
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.get('/',(req,res)=>{
    res.render('login');
 
@@ -87,6 +92,7 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.use('/api/carts', cart,);
 app.use('/api/chats', chat);
+app.use('/', router)
 app.get('/registrer',(req,res)=>{
 res.render('registrer');
 
@@ -99,61 +105,89 @@ app.get('/logout',(req,res)=>{
       res.render('logout');
    })
 })
-app.post('/', async(req,res)=>{
+app.post('/',passport.authenticate('login',{failureRedirect:'/faillogin'}), async(req,res)=>{
    
-   const {mail, password} = req.body
-   if(mail === 'adminCoder@Coder.com' || password === 'adminCod3r123'){
-      res.redirect('/realtimeproducts');
-   }else{
-      if(serchUsers(mail,password)){
-         if(req.session?.mail === mail || req.session?.password === password){
-            console.log('entro al cuarto if')
+   if(!req.user) return res.status(400).send({status:"error",error:"Invalid credentials"})
 
-            res.redirect('/realtimeproducts');
 
-            }
-            else{
-               res.redirect('/faillogin');   
-            } 
-         } 
-      else{
-         res.redirect('/faillogin');   
-      } 
-   }  
+   if(req.user.mail === 'adminCoder@Coder.com' & req.user.password === 'adminCod3r123')
+   req.session.user = {
+      name:req.user.name,
+      surname: req.user.surname,
+      age: req.user.age,
+      mail: req.user.mail,
+      admin: true,
+      userRol:false
+   }
+   else{
+      req.session.user = {
+         name:req.user.name,
+         surname: req.user.surname,
+         age: req.user.age,
+         mail: req.user.mail,
+         admin: false,
+         userRol:true
+   }}
+   res.redirect('/loginsuccess');
+   // const {mail, password} = req.body
+   // if(mail === 'adminCoder@Coder.com' || password === 'adminCod3r123'){
+   //    res.redirect('/realtimeproducts');
+   // }else{
+   //    if(serchUsers(mail,password)){
+   //       if(req.session?.mail === mail || req.session?.password === password){
+
+   //          res.redirect('/realtimeproducts');
+
+   //          }
+   //          else{
+   //             res.redirect('/faillogin');   
+   //          } 
+   //       } 
+   //    else{
+   //       res.redirect('/faillogin');   
+   //    } 
+   // }  
 })
-
+app.get('/loginsuccess',(req,res)=>{
+   res.render('loginsuccess');
+})
 app.get('/faillogin',(req,res)=>{
    res.render('loginfail');
 
 })
-app.post('/registrer', async(req,res)=>{
+app.post('/registrer',passport.authenticate('register',{failureRedirect:'failregister'}), async(req,res)=>{
    
-   const {name, surname,mail,age, password} = req.body
+   // const {name, surname,mail,age, password} = req.body
    
-   if( !validates.valueExist(name) & !validates.valueExist(surname) & !validates.valueExist(mail) & !validates.valueExist(age) & !validates.valueExist(password) ){
-      return res.send('Registration failed')
-   }
-   if(mail !== 'adminCoder@Coder.com' || password !== 'adminCod3r123'){
-      await userModel.create({
-         name,
-         surname,
-         mail,
-         age, 
-         password
-       })
-      req.session.mail = mail
-      req.session.password = password
-      req.session.userRol = true;
-      req.session.admin = false;
-      res.redirect('/')      
-   }else{
-      req.session.mail = mail
-      req.session.password = password
-      req.session.userRol = false;
-      req.session.admin = true;
+   // if( !validates.valueExist(name) & !validates.valueExist(surname) & !validates.valueExist(mail) & !validates.valueExist(age) & !validates.valueExist(password) ){
+   //    return res.send('Registration failed')
+   // }
+   // if(mail !== 'adminCoder@Coder.com' || password !== 'adminCod3r123'){
+   //    await userModel.create({
+   //       name,
+   //       surname,
+   //       mail,
+   //       age, 
+   //       password:createHash(password)
+   //     })
+   //    req.session.mail = mail
+   //    req.session.password = password
+   //    req.session.userRol = true;
+   //    req.session.admin = false;
+   //    res.redirect('/')      
+   // }else{
+   //    req.session.mail = mail
+   //    req.session.password = password
+   //    req.session.userRol = false;
+   //    req.session.admin = true;
      
-      res.redirect('/');
-   }
+   //    res.redirect('/');
+   // }
+   res.redirect('/');
+})
+app.get('/failregister', async(req,res)=>{
+   console.log('fail strategy');
+   res.send({error:"failed"})
 })
 socketServer.on('connection', socket =>{
    console.log("Nuevo cliente conectado")
