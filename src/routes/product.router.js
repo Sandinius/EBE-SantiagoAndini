@@ -53,7 +53,7 @@ product.get('/productsview',auth,async (req, res) => {
 
 product.get('/realtimeproducts',auth, async (req, res) => {
   let users = req.session
-  console.log(users)
+  console.log(users.user.userRol)
 
   let { type, limit, page, sort } = req.query;
   if(type == undefined){

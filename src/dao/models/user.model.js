@@ -8,10 +8,17 @@ const userSchema = new mongoose.Schema({
         index:true
     },
     surname:String,
-    mail:String,
+    mail:{
+        type: String,
+        unique: true
+    },
     age:Number,
     password:String,
-
+    cart: Number,
+    role:{
+        type: String,
+        default: 'user'
+    } 
 
 })
 

@@ -15,7 +15,7 @@ import Validates from "./dao/validate.js";
 import { userModel } from "./dao/models/user.model.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
-import router from "./routes/github.routes.js";
+import router from "./routes/github.router.js";
 
 const fileStorage = FileStore(session);
 export const app = express();
@@ -109,8 +109,9 @@ app.post('/',passport.authenticate('login',{failureRedirect:'/faillogin'}), asyn
    
    if(!req.user) return res.status(400).send({status:"error",error:"Invalid credentials"})
 
-
-   if(req.user.mail === 'adminCoder@Coder.com' & req.user.password === 'adminCod3r123')
+   console.log(req.user.mail)
+   console.log(req.user.password)
+   if(req.user.mail === 'adminCoder@Coder.com')
    req.session.user = {
       name:req.user.name,
       surname: req.user.surname,
@@ -120,6 +121,8 @@ app.post('/',passport.authenticate('login',{failureRedirect:'/faillogin'}), asyn
       userRol:false
    }
    else{
+      console.log(req.user.mail)
+      console.log(req.user.password)
       req.session.user = {
          name:req.user.name,
          surname: req.user.surname,
@@ -188,6 +191,14 @@ app.post('/registrer',passport.authenticate('register',{failureRedirect:'failreg
 app.get('/failregister', async(req,res)=>{
    console.log('fail strategy');
    res.send({error:"failed"})
+})
+
+app.get('/current', auth,async(req,res)=>{
+   let users = req.session
+  console.log(users.user.userRol)
+
+   res.render('current',{users});
+
 })
 socketServer.on('connection', socket =>{
    console.log("Nuevo cliente conectado")

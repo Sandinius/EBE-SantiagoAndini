@@ -1,11 +1,11 @@
 <div>
    <h1>Pantalla para agregar productos</h1>
 
-{{#if users.userRol}}
-    <p>Bienvenido Usuario  {{users.mail}}</p>
+{{#if users.user.userRol}}
+    <p>Bienvenido Usuario  {{users.user.mail}}</p>
     {{/if}}
-    {{#if users.admin}}
-    <p>Bienvenido Administrador  {{users.mail}}</p>
+    {{#if users.user.admin}}
+    <p>Bienvenido Administrador  {{users.user.mail}}</p>
     {{/if}}
 <button type:"button"><a href="/logout">Desconectarse</a></button>
 

@@ -24,7 +24,9 @@ const initializePassport = () =>{
                     surname:'',
                     mail:profile._json.email,
                     age:18,
-                    password:''
+                    password:'',
+                    cart:'',
+                    role:'user',
                 }
                 let result = await userModel.create(newUser);
                 done(null,result);
@@ -49,16 +51,31 @@ const initializePassport = () =>{
                     console.log("user already exists");
                     return done(null,false);
                 }
+                if(username === 'adminCoder@Coder.com'){
                 const newUser = {
                     name,
                     surname,
                     mail,
                     age,
-                    password:createHash(password)
+                    password:createHash(password),
+                    cart:'',
+                    role: 'admin'
                 }
                 let result = await userModel.create(newUser);
 
-                return done(null,result);
+                return done(null,result);}else{
+                    const newUser = {
+                        name,
+                        surname,
+                        mail,
+                        age,
+                        password:createHash(password),
+                        cart:'',
+                    }
+                    let result = await userModel.create(newUser);
+    
+                    return done(null,result);
+                }
             }catch(error){
                 return done("Error al obtener el usuario: "+error);
             }
