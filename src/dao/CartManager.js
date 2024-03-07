@@ -1,5 +1,5 @@
 import fs from 'fs';
-
+import { cartModel } from './models/cart.model.js';
 class CartManager {
     constructor() {
       this.cart = [];
@@ -8,12 +8,29 @@ class CartManager {
       this.productsinfo = './products.json';
       this.loadProductsFromDisk();
     }
-  
+    generateUnicCode() {
+      const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      let unicCode = '';
+    
+      for (let i = 0; i < 4; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        unicCode += characters[randomIndex];
+      }
+    
+      return unicCode.toString(36);
+    }
     generateUniqueId() {
       const idUnic = this.idCounter++;
       return idUnic.toString(36);
     }
     
+  async generateCart(id){
+  const user_id = id; 
+  await cartModel.create({
+    user_id,
+    products: []
+  })
+    }
     getCarts() {
       return this.cart;
     }
@@ -118,13 +135,15 @@ class CartManager {
     }
   
     getCartById2(req, res) {
+      this.cart.forEach(element => {
       const id = req.params.id;
-      const cart = this.cart.find(product => product.id === id);
-      if (cart) {
-        res.json(cart.product);
-      } else {
-        res.status(404).json({ error: "Product not found" });
+      if(id == element._id){
+        res.json(this.cart);
+      }else {
+        res.status(404).json({ error: "Cart not found" });
       }
+      });
+      
     }
   }
 

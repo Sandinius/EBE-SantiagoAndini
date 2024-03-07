@@ -7,7 +7,14 @@
     {{#if users.user.admin}}
     <p>Bienvenido Administrador  {{users.user.mail}}</p>
     {{/if}}
-<button type:"button"><a href="/logout">Desconectarse</a></button>
+<button type:"button"><a style="text-decoration: none;" href="/logout">Desconectarse</a></button>
+{{#if users.user.userRol}}
+<button type:"button"><a style="text-decoration: none;" href="/api/carts">Ver Carrito</a></button>
+
+
+<button type:"button" onclick="finalizarCompra('{{idcart}}')">Finalizar compra</button>
+{{/if}}
+{{#if users.user.admin}} 
 
    <form action="" method="post" enctype="multipart/form-data">
         <label>Nombre de producto: </label> <input name="title" type="text" required/>
@@ -24,12 +31,16 @@
         <label>ID del Producto:</label><input type="text" id="productId" name="productId" required>
         <button type="button" onclick="deleteProduct()">Eliminar Producto</button>
     </form>
+{{/if}}
+
     <div class="acomoda">
-{{#each products.docs}}
+{{#each products.docs }}
+
     <div>
         <p>ID: {{this._id}}</p>
         <p>Producto: {{this.title}}</p>
         <p>Precio: {{this.price}}</p>
+        <button onclick="agregado('{{this._id}}')">Agregar al carrito</button>
     </div>
     {{/each}}
     </div>

@@ -62,8 +62,9 @@ const initializePassport = () =>{
                     role: 'admin'
                 }
                 let result = await userModel.create(newUser);
-
-                return done(null,result);}else{
+                
+                return done(null,result);
+            }else{
                     const newUser = {
                         name,
                         surname,

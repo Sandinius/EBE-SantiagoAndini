@@ -16,13 +16,16 @@ import { userModel } from "./dao/models/user.model.js";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import router from "./routes/github.router.js";
-
+import  twilio  from "twilio";
 const fileStorage = FileStore(session);
 export const app = express();
 const PORT = 8080;
 const httpServer = app.listen(PORT, () => {console.log(`Server is running on port ${PORT}`);});
 
-
+const TWILIO_ACOUNT_SID = "AC1992b63f5665bfe7f709af310a287bd5";
+const TWILIO_AUTH_TOKEN = "5cc2ec6deec63828ff8325473cbb4f4a";
+const TWILIO_SMS_NUMBER = "+17178645394"
+const client = twilio(TWILIO_ACOUNT_SID,TWILIO_AUTH_TOKEN)
 const validates = new Validates();
 
 mongoose.connect('mongodb+srv://santiagoandini2:123@clustercorder.bht8tuu.mongodb.net/ecommerce');
@@ -42,7 +45,12 @@ export default function auth(req,res,next){
    }
    return res.status(401).send('Debes estar logueado para entrar a esta pagina')
 }
-
+export  function auth2(req,res,next){
+   if (req.session.user?.userRol){
+      return next()
+   }
+   return res.status(401).send('Debes ser un usuario para acceder a esta area de la pagina')
+}
 
  async function serchUsers(mail, password){
    let users = await userModel.find().lean();
@@ -78,7 +86,14 @@ app.get('/',(req,res)=>{
 
 })
 
-
+app.get('/sms',auth2 , async (req,res) =>{
+   let result = await client.messages.create({
+      body:"esto es un mensaje",
+      from: TWILIO_SMS_NUMBER,
+      to: "+541126363425"
+   })
+   res.send({status:"succes", result:"Message sent"})
+})
 app.get('/privado', auth, (req, res)=>{
    res.send('Si estas viendo esto es porque estas logueado')
 })

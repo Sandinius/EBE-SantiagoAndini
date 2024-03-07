@@ -4,6 +4,7 @@ import ProductManager from '../dao/ProductManager.js';
 import multer from 'multer';
 import { productModel } from '../dao/models/products.model.js';
 import auth from '../app.js';
+import { cartModel } from '../dao/models/cart.model.js';
 
 
 const storage = multer.memoryStorage();
@@ -53,8 +54,17 @@ product.get('/productsview',auth,async (req, res) => {
 
 product.get('/realtimeproducts',auth, async (req, res) => {
   let users = req.session
-  console.log(users.user.userRol)
+  console.log(users)
+  let carts = await cartModel.find().lean();
+  
+  const cartWithUserId = carts.find(cart => cart.user_id === users.passport.user);
+  let idcart= '';
 
+  if(cartWithUserId){
+    idcart = cartWithUserId._id;
+    console.log(cartWithUserId._id)
+  }
+  
   let { type, limit, page, sort } = req.query;
   if(type == undefined){
     type = '';
@@ -83,8 +93,7 @@ product.get('/realtimeproducts',auth, async (req, res) => {
     products.prevLink = `/realtimeproducts?type=${type}&limit=${limit}&page=${+page - 1}`;
     products.nextLink = `/realtimeproducts?type=${type}&limit=${limit}&page=${+page + 1}`;
     console.log(products.docs[0].title)
-
-  res.render('realtimeproducts',{products, users, style:'index.css'});
+  res.render('realtimeproducts',{products, users,idcart, style:'index.css'});
 });
 
 product.post('/realtimeproducts',auth,upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
@@ -107,7 +116,6 @@ product.post('/realtimeproducts',auth,upload.fields([{ name: 'thumbnail', maxCou
 product.get('/realtimeproducts/:id',auth,async (req, res) => {
   let id = req.params.id;
   let products = await productModel.find().lean();
-
   if(products.some(product => product.id === id)){
   res.send(productManager.getProductById2(req, res))
 }else{
