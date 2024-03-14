@@ -1,5 +1,5 @@
 import  express  from "express";
-import __dirname, { createHash, isValidPassword } from "./utils.js";
+import __dirname, { createHash, isValidPassword, generateProductsFine, generateProductsWrong } from "./utils.js";
 import handlebars from "express-handlebars";
 import product from "./routes/product.router.js";
 import cart from "./routes/cart.router.js";
@@ -17,6 +17,10 @@ import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 import router from "./routes/github.router.js";
 import  twilio  from "twilio";
+import CustomError from "./services/CustomError.js";
+import { generateProductsInfo } from "./services/info.js";
+import EErrors from "./services/enums.js";
+import errorHandler from './middlewares/errors/index.js'
 const fileStorage = FileStore(session);
 export const app = express();
 const PORT = 8080;
@@ -173,6 +177,41 @@ app.get('/faillogin',(req,res)=>{
    res.render('loginfail');
 
 })
+app.get('/mockingproducts',(req,res)=>{
+   let products = []
+   for(let i=0;i<50;i++){
+      products.push(generateProductsFine())
+   }
+   console.log(products)
+   console.log(products.length)
+
+   res.send({status: 'Success', payload: products})
+})
+
+app.post('/mockingproducts',(req,res)=>{
+   const { title, price, description, stock } = req.body;
+   console.log(title)
+   console.log(price)
+   console.log(description)
+   console.log(stock)
+   let products =[]
+   if(title && price && description && stock){
+      let productoAgregado = {title, price, description, stock}
+      products.push(productoAgregado)
+   }else{
+      let productoAgregado = {title, price, description, stock}
+      CustomError.createError({
+         name: 'Product Creation Error',
+         cause: generateProductsInfo(productoAgregado),
+         message:'Error trying to create product',
+         code: EErrors.INVALID_TYPES
+      })
+   }
+   res.send({status: 'Success', payload: products})
+
+})
+app.use(errorHandler);
+
 app.post('/registrer',passport.authenticate('register',{failureRedirect:'failregister'}), async(req,res)=>{
    
    // const {name, surname,mail,age, password} = req.body
