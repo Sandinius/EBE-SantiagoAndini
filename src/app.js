@@ -1,5 +1,5 @@
 import  express  from "express";
-import __dirname, { createHash, isValidPassword, generateProductsFine, generateProductsWrong } from "./utils.js";
+import __dirname, { createHash, isValidPassword, generateProductsFine, generateProductsWrong } from "./utils/utils.js";
 import handlebars from "express-handlebars";
 import product from "./routes/product.router.js";
 import cart from "./routes/cart.router.js";
@@ -21,8 +21,11 @@ import CustomError from "./services/CustomError.js";
 import { generateProductsInfo } from "./services/info.js";
 import EErrors from "./services/enums.js";
 import errorHandler from './middlewares/errors/index.js'
+import { addlogger } from "./utils/loggers.js";
+import dotenv from 'dotenv'
 const fileStorage = FileStore(session);
 export const app = express();
+dotenv.config()
 const PORT = 8080;
 const httpServer = app.listen(PORT, () => {console.log(`Server is running on port ${PORT}`);});
 
@@ -66,7 +69,7 @@ export  function auth2(req,res,next){
        }
    });
 }
-
+app.use(addlogger)
 app.use(cookieParser("CoderS3cR3tC0D3"))
 app.engine('handlebars', hbs.engine);
 app.use(session({
@@ -86,10 +89,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/',(req,res)=>{
+   req.logger.warn('Alerta')
    res.render('login');
 
 })
-
+app.get('/loggertest',(req,res)=>{
+   req.logger.debug('Esto es un debug')
+   req.logger.http('Esto es un http')
+   req.logger.info('Esto es info')
+   req.logger.warn('Esto es una alerta')
+   req.logger.error('Esto es un error')
+   res.send({message:'Error de prueba'})
+})
 app.get('/sms',auth2 , async (req,res) =>{
    let result = await client.messages.create({
       body:"esto es un mensaje",
@@ -210,7 +221,7 @@ app.post('/mockingproducts',(req,res)=>{
    res.send({status: 'Success', payload: products})
 
 })
-app.use(errorHandler);
+// app.use(errorHandler);
 
 app.post('/registrer',passport.authenticate('register',{failureRedirect:'failregister'}), async(req,res)=>{
    
