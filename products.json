@@ -89,7 +89,6 @@
     "stock": 45,
     "type": "clothes"
   },
-  
   {
     "title": "Mochila",
     "description": "Mochila espaciosa y duradera para llevar tus pertenencias con comodidad.",
@@ -450,8 +449,7 @@
     "stock": 28,
     "type": "electronics"
   },
-
-   {
+  {
     "title": "Abrigo de invierno",
     "description": "Abrigo cálido y acolchado para enfrentar las bajas temperaturas invernales.",
     "price": 119.99,
@@ -541,275 +539,314 @@
     "stock": 22,
     "type": "electronics"
   },
-    {
-      "title": "Cazadora de cuero",
-      "description": "Cazadora de cuero moderna y resistente para un estilo audaz.",
-      "price": 159.99,
-      "thumbnail": "cazadora_cuero.jpg",
-      "code": "STU123",
-      "stock": 18,
-      "type": "clothes"
-    },
-    {
-      "title": "Cámara instantánea",
-      "description": "Cámara instantánea para capturar momentos especiales al instante.",
-      "price": 89.99,
-      "thumbnail": "camara_instantanea.jpg",
-      "code": "VWX456",
-      "stock": 22,
-      "type": "electronics"
-    },
-    {
-      "title": "Blusa elegante",
-      "description": "Blusa elegante y versátil para ocasiones formales o de negocios.",
-      "price": 49.99,
-      "thumbnail": "blusa_elegante.jpg",
-      "code": "YZA789",
-      "stock": 30,
-      "type": "clothes"
-    },
-    {
-      "title": "Reproductor de MP3",
-      "description": "Reproductor de MP3 compacto para disfrutar de tu música favorita en cualquier lugar.",
-      "price": 29.99,
-      "thumbnail": "reproductor_mp3.jpg",
-      "code": "BCD012",
-      "stock": 25,
-      "type": "electronics"
-    },
-    {
-      "title": "Pijama de algodón",
-      "description": "Pijama cómodo y suave para noches relajadas.",
-      "price": 24.99,
-      "thumbnail": "pijama_algodon.jpg",
-      "code": "EFG345",
-      "stock": 40,
-      "type": "clothes"
-    },
-    {
-      "title": "Bocina portátil",
-      "description": "Bocina portátil para llevar la música contigo a donde vayas.",
-      "price": 39.99,
-      "thumbnail": "bocina_portatil.jpg",
-      "code": "HIJ678",
-      "stock": 35,
-      "type": "electronics"
-    },
-    {
-      "title": "Vestido playero",
-      "description": "Vestido fresco y ligero para disfrutar de días soleados en la playa.",
-      "price": 29.99,
-      "thumbnail": "vestido_playero.jpg",
-      "code": "KLM901",
-      "stock": 50,
-      "type": "clothes"
-    },
-    {
-      "title": "Secadora de pelo",
-      "description": "Secadora de pelo con tecnología iónica para un secado rápido y sin frizz.",
-      "price": 49.99,
-      "thumbnail": "secadora_pelo.jpg",
-      "code": "NOP234",
-      "stock": 15,
-      "type": "electronics"
-    },
-    {
-      "title": "Calcetines térmicos",
-      "description": "Calcetines térmicos para mantener tus pies calientes en climas fríos.",
-      "price": 14.99,
-      "thumbnail": "calcetines_termicos.jpg",
-      "code": "PQR567",
-      "stock": 60,
-      "type": "clothes"
-    },
-    {
-      "title": "Auriculares con cancelación de ruido",
-      "description": "Auriculares que eliminan el ruido externo para una experiencia auditiva inmersiva.",
-      "price": 129.99,
-      "thumbnail": "auriculares_cancelacion_ruido.jpg",
-      "code": "STU890",
-      "stock": 25,
-      "type": "electronics"
-    },
-    
-      {
-        "title": "Chaqueta de punto",
-        "description": "Chaqueta de punto suave y acogedora para los días más frescos.",
-        "price": 34.99,
-        "thumbnail": "chaqueta_punto.jpg",
-        "code": "VWX123",
-        "stock": 50,
-        "type": "clothes"
-      },
-      {
-        "title": "Altavoz resistente al agua",
-        "description": "Altavoz Bluetooth resistente al agua para su uso en entornos húmedos.",
-        "price": 44.99,
-        "thumbnail": "altavoz_resistente_agua.jpg",
-        "code": "YZA456",
-        "stock": 20,
-        "type": "electronics"
-      },
-      {
-        "title": "Pantalones formales",
-        "description": "Pantalones formales para un look elegante en ocasiones especiales.",
-        "price": 59.99,
-        "thumbnail": "pantalones_formales.jpg",
-        "code": "BCD789",
-        "stock": 22,
-        "type": "clothes"
-      },
-      {
-        "title": "Auriculares Bluetooth",
-        "description": "Auriculares inalámbricos con tecnología Bluetooth para una experiencia sin cables.",
-        "price": 39.99,
-        "thumbnail": "auriculares_bluetooth.jpg",
-        "code": "EFG012",
-        "stock": 30,
-        "type": "electronics"
-      },
-      {
-        "title": "Vestido de fiesta",
-        "description": "Vestido elegante para eventos y celebraciones especiales.",
-        "price": 129.99,
-        "thumbnail": "vestido_fiesta.jpg",
-        "code": "HIJ345",
-        "stock": 18,
-        "type": "clothes"
-      },
-      {
-        "title": "Mouse gaming",
-        "description": "Mouse ergonómico y preciso diseñado para juegos intensos.",
-        "price": 49.99,
-        "thumbnail": "mouse_gaming.jpg",
-        "code": "KLM678",
-        "stock": 25,
-        "type": "electronics"
-      },
-      {
-        "title": "Camisa casual",
-        "description": "Camisa casual y cómoda para un estilo relajado.",
-        "price": 29.99,
-        "thumbnail": "camisa_casual.jpg",
-        "code": "NOP901",
-        "stock": 40,
-        "type": "clothes"
-      },
-      {
-        "title": "Tablet con stylus",
-        "description": "Tablet con stylus para tomar notas y dibujar con precisión.",
-        "price": 199.99,
-        "thumbnail": "tablet_stylus.jpg",
-        "code": "PQR234",
-        "stock": 15,
-        "type": "electronics"
-      },
-      {
-        "title": "Bufanda de lana",
-        "description": "Bufanda de lana suave y abrigada para los días más fríos.",
-        "price": 19.99,
-        "thumbnail": "bufanda_lana.jpg",
-        "code": "STU567",
-        "stock": 35,
-        "type": "clothes"
-      },
-      {
-        "title": "Impresora multifunción",
-        "description": "Impresora multifunción para imprimir, escanear y copiar documentos fácilmente.",
-        "price": 79.99,
-        "thumbnail": "impresora_multifuncion.jpg",
-        "code": "VWX890",
-        "stock": 28,
-        "type": "electronics"
-      },
-        {
-          "title": "Gorro de lana",
-          "description": "Gorro de lana suave y cómodo para protegerte del frío.",
-          "price": 14.99,
-          "thumbnail": "gorro_lana.jpg",
-          "code": "YZA123",
-          "stock": 20,
-          "type": "clothes"
-        },
-        {
-          "title": "Cámara DSLR",
-          "description": "Cámara DSLR para capturar imágenes de alta calidad con ajustes manuales.",
-          "price": 599.99,
-          "thumbnail": "camara_dslr.jpg",
-          "code": "BCD456",
-          "stock": 22,
-          "type": "electronics"
-        },
-        {
-          "title": "Sudadera con capucha",
-          "description": "Sudadera cómoda y abrigada con capucha para un estilo casual.",
-          "price": 49.99,
-          "thumbnail": "sudadera_capucha.jpg",
-          "code": "EFG789",
-          "stock": 30,
-          "type": "clothes"
-        },
-        {
-          "title": "Auriculares inalámbricos deportivos",
-          "description": "Auriculares inalámbricos diseñados para actividades deportivas con ajuste seguro.",
-          "price": 69.99,
-          "thumbnail": "auriculares_inalambricos_deportivos.jpg",
-          "code": "HIJ012",
-          "stock": 25,
-          "type": "electronics"
-        },
-        {
-          "title": "Vestido veraniego",
-          "description": "Vestido ligero y fresco perfecto para los días calurosos del verano.",
-          "price": 34.99,
-          "thumbnail": "vestido_veraniego.jpg",
-          "code": "KLM345",
-          "stock": 50,
-          "type": "clothes"
-        },
-        {
-          "title": "Teclado Bluetooth",
-          "description": "Teclado Bluetooth para una escritura cómoda en dispositivos compatibles.",
-          "price": 39.99,
-          "thumbnail": "teclado_bluetooth.jpg",
-          "code": "NOP678",
-          "stock": 35,
-          "type": "electronics"
-        },
-        {
-          "title": "Jeans ajustados",
-          "description": "Jeans ajustados para un look moderno y versátil.",
-          "price": 44.99,
-          "thumbnail": "jeans_ajustados.jpg",
-          "code": "PQR901",
-          "stock": 60,
-          "type": "clothes"
-        },
-        {
-          "title": "Smart TV",
-          "description": "Smart TV con acceso a plataformas de transmisión para una experiencia de entretenimiento completa.",
-          "price": 499.99,
-          "thumbnail": "smart_tv.jpg",
-          "code": "STU234",
-          "stock": 15,
-          "type": "electronics"
-        },
-        {
-          "title": "Gafas de lectura",
-          "description": "Gafas de lectura con estilo para mejorar la visión de cerca.",
-          "price": 19.99,
-          "thumbnail": "gafas_lectura.jpg",
-          "code": "VWX567",
-          "stock": 40,
-          "type": "clothes"
-        },
-        {
-          "title": "Cargador solar",
-          "description": "Cargador solar para cargar dispositivos en cualquier lugar con luz solar.",
-          "price": 29.99,
-          "thumbnail": "cargador_solar.jpg",
-          "code": "YZA890",
-          "stock": 28,
-          "type": "electronics"
-        }
-      ]
+  {
+    "title": "Cazadora de cuero",
+    "description": "Cazadora de cuero moderna y resistente para un estilo audaz.",
+    "price": 159.99,
+    "thumbnail": "cazadora_cuero.jpg",
+    "code": "STU123",
+    "stock": 18,
+    "type": "clothes"
+  },
+  {
+    "title": "Cámara instantánea",
+    "description": "Cámara instantánea para capturar momentos especiales al instante.",
+    "price": 89.99,
+    "thumbnail": "camara_instantanea.jpg",
+    "code": "VWX456",
+    "stock": 22,
+    "type": "electronics"
+  },
+  {
+    "title": "Blusa elegante",
+    "description": "Blusa elegante y versátil para ocasiones formales o de negocios.",
+    "price": 49.99,
+    "thumbnail": "blusa_elegante.jpg",
+    "code": "YZA789",
+    "stock": 30,
+    "type": "clothes"
+  },
+  {
+    "title": "Reproductor de MP3",
+    "description": "Reproductor de MP3 compacto para disfrutar de tu música favorita en cualquier lugar.",
+    "price": 29.99,
+    "thumbnail": "reproductor_mp3.jpg",
+    "code": "BCD012",
+    "stock": 25,
+    "type": "electronics"
+  },
+  {
+    "title": "Pijama de algodón",
+    "description": "Pijama cómodo y suave para noches relajadas.",
+    "price": 24.99,
+    "thumbnail": "pijama_algodon.jpg",
+    "code": "EFG345",
+    "stock": 40,
+    "type": "clothes"
+  },
+  {
+    "title": "Bocina portátil",
+    "description": "Bocina portátil para llevar la música contigo a donde vayas.",
+    "price": 39.99,
+    "thumbnail": "bocina_portatil.jpg",
+    "code": "HIJ678",
+    "stock": 35,
+    "type": "electronics"
+  },
+  {
+    "title": "Vestido playero",
+    "description": "Vestido fresco y ligero para disfrutar de días soleados en la playa.",
+    "price": 29.99,
+    "thumbnail": "vestido_playero.jpg",
+    "code": "KLM901",
+    "stock": 50,
+    "type": "clothes"
+  },
+  {
+    "title": "Secadora de pelo",
+    "description": "Secadora de pelo con tecnología iónica para un secado rápido y sin frizz.",
+    "price": 49.99,
+    "thumbnail": "secadora_pelo.jpg",
+    "code": "NOP234",
+    "stock": 15,
+    "type": "electronics"
+  },
+  {
+    "title": "Calcetines térmicos",
+    "description": "Calcetines térmicos para mantener tus pies calientes en climas fríos.",
+    "price": 14.99,
+    "thumbnail": "calcetines_termicos.jpg",
+    "code": "PQR567",
+    "stock": 60,
+    "type": "clothes"
+  },
+  {
+    "title": "Auriculares con cancelación de ruido",
+    "description": "Auriculares que eliminan el ruido externo para una experiencia auditiva inmersiva.",
+    "price": 129.99,
+    "thumbnail": "auriculares_cancelacion_ruido.jpg",
+    "code": "STU890",
+    "stock": 25,
+    "type": "electronics"
+  },
+  {
+    "title": "Chaqueta de punto",
+    "description": "Chaqueta de punto suave y acogedora para los días más frescos.",
+    "price": 34.99,
+    "thumbnail": "chaqueta_punto.jpg",
+    "code": "VWX123",
+    "stock": 50,
+    "type": "clothes"
+  },
+  {
+    "title": "Altavoz resistente al agua",
+    "description": "Altavoz Bluetooth resistente al agua para su uso en entornos húmedos.",
+    "price": 44.99,
+    "thumbnail": "altavoz_resistente_agua.jpg",
+    "code": "YZA456",
+    "stock": 20,
+    "type": "electronics"
+  },
+  {
+    "title": "Pantalones formales",
+    "description": "Pantalones formales para un look elegante en ocasiones especiales.",
+    "price": 59.99,
+    "thumbnail": "pantalones_formales.jpg",
+    "code": "BCD789",
+    "stock": 22,
+    "type": "clothes"
+  },
+  {
+    "title": "Auriculares Bluetooth",
+    "description": "Auriculares inalámbricos con tecnología Bluetooth para una experiencia sin cables.",
+    "price": 39.99,
+    "thumbnail": "auriculares_bluetooth.jpg",
+    "code": "EFG012",
+    "stock": 30,
+    "type": "electronics"
+  },
+  {
+    "title": "Vestido de fiesta",
+    "description": "Vestido elegante para eventos y celebraciones especiales.",
+    "price": 129.99,
+    "thumbnail": "vestido_fiesta.jpg",
+    "code": "HIJ345",
+    "stock": 18,
+    "type": "clothes"
+  },
+  {
+    "title": "Mouse gaming",
+    "description": "Mouse ergonómico y preciso diseñado para juegos intensos.",
+    "price": 49.99,
+    "thumbnail": "mouse_gaming.jpg",
+    "code": "KLM678",
+    "stock": 25,
+    "type": "electronics"
+  },
+  {
+    "title": "Camisa casual",
+    "description": "Camisa casual y cómoda para un estilo relajado.",
+    "price": 29.99,
+    "thumbnail": "camisa_casual.jpg",
+    "code": "NOP901",
+    "stock": 40,
+    "type": "clothes"
+  },
+  {
+    "title": "Tablet con stylus",
+    "description": "Tablet con stylus para tomar notas y dibujar con precisión.",
+    "price": 199.99,
+    "thumbnail": "tablet_stylus.jpg",
+    "code": "PQR234",
+    "stock": 15,
+    "type": "electronics"
+  },
+  {
+    "title": "Bufanda de lana",
+    "description": "Bufanda de lana suave y abrigada para los días más fríos.",
+    "price": 19.99,
+    "thumbnail": "bufanda_lana.jpg",
+    "code": "STU567",
+    "stock": 35,
+    "type": "clothes"
+  },
+  {
+    "title": "Impresora multifunción",
+    "description": "Impresora multifunción para imprimir, escanear y copiar documentos fácilmente.",
+    "price": 79.99,
+    "thumbnail": "impresora_multifuncion.jpg",
+    "code": "VWX890",
+    "stock": 28,
+    "type": "electronics"
+  },
+  {
+    "title": "Gorro de lana",
+    "description": "Gorro de lana suave y cómodo para protegerte del frío.",
+    "price": 14.99,
+    "thumbnail": "gorro_lana.jpg",
+    "code": "YZA123",
+    "stock": 20,
+    "type": "clothes"
+  },
+  {
+    "title": "Cámara DSLR",
+    "description": "Cámara DSLR para capturar imágenes de alta calidad con ajustes manuales.",
+    "price": 599.99,
+    "thumbnail": "camara_dslr.jpg",
+    "code": "BCD456",
+    "stock": 22,
+    "type": "electronics"
+  },
+  {
+    "title": "Sudadera con capucha",
+    "description": "Sudadera cómoda y abrigada con capucha para un estilo casual.",
+    "price": 49.99,
+    "thumbnail": "sudadera_capucha.jpg",
+    "code": "EFG789",
+    "stock": 30,
+    "type": "clothes"
+  },
+  {
+    "title": "Auriculares inalámbricos deportivos",
+    "description": "Auriculares inalámbricos diseñados para actividades deportivas con ajuste seguro.",
+    "price": 69.99,
+    "thumbnail": "auriculares_inalambricos_deportivos.jpg",
+    "code": "HIJ012",
+    "stock": 25,
+    "type": "electronics"
+  },
+  {
+    "title": "Vestido veraniego",
+    "description": "Vestido ligero y fresco perfecto para los días calurosos del verano.",
+    "price": 34.99,
+    "thumbnail": "vestido_veraniego.jpg",
+    "code": "KLM345",
+    "stock": 50,
+    "type": "clothes"
+  },
+  {
+    "title": "Teclado Bluetooth",
+    "description": "Teclado Bluetooth para una escritura cómoda en dispositivos compatibles.",
+    "price": 39.99,
+    "thumbnail": "teclado_bluetooth.jpg",
+    "code": "NOP678",
+    "stock": 35,
+    "type": "electronics"
+  },
+  {
+    "title": "Jeans ajustados",
+    "description": "Jeans ajustados para un look moderno y versátil.",
+    "price": 44.99,
+    "thumbnail": "jeans_ajustados.jpg",
+    "code": "PQR901",
+    "stock": 60,
+    "type": "clothes"
+  },
+  {
+    "title": "Smart TV",
+    "description": "Smart TV con acceso a plataformas de transmisión para una experiencia de entretenimiento completa.",
+    "price": 499.99,
+    "thumbnail": "smart_tv.jpg",
+    "code": "STU234",
+    "stock": 15,
+    "type": "electronics"
+  },
+  {
+    "title": "Gafas de lectura",
+    "description": "Gafas de lectura con estilo para mejorar la visión de cerca.",
+    "price": 19.99,
+    "thumbnail": "gafas_lectura.jpg",
+    "code": "VWX567",
+    "stock": 40,
+    "type": "clothes"
+  },
+  {
+    "title": "Cargador solar",
+    "description": "Cargador solar para cargar dispositivos en cualquier lugar con luz solar.",
+    "price": 29.99,
+    "thumbnail": "cargador_solar.jpg",
+    "code": "YZA890",
+    "stock": 28,
+    "type": "electronics"
+  },
+  {
+    "id": "undefinee",
+    "title": "adwd",
+    "description": "daa",
+    "price": "312",
+    "status": true,
+    "thumbnail": null,
+    "code": "VXBE",
+    "stock": "41"
+  },
+  {
+    "id": "undefinef",
+    "title": "adwd",
+    "description": "daa",
+    "price": "312",
+    "status": true,
+    "thumbnail": null,
+    "code": "1AFI",
+    "stock": "41"
+  },
+  {
+    "id": "undefineg",
+    "title": "PRUEBA",
+    "description": "PRODUCTO",
+    "price": "11",
+    "status": true,
+    "thumbnail": null,
+    "code": "PO2Y",
+    "stock": "34"
+  },
+  {
+    "id": "undefineh",
+    "title": "PRUEBA",
+    "description": "PRODUCTO",
+    "price": "11",
+    "status": true,
+    "thumbnail": null,
+    "code": "S3OR",
+    "stock": "34"
+  }
+]

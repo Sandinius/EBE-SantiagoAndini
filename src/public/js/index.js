@@ -2,6 +2,7 @@
 
 const socket = io();
 
+
 function deleteProduct() {
     const productId = document.getElementById('productId').value;
 
@@ -14,12 +15,15 @@ function deleteProduct() {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(data);
-        window.location.href = '/realtimeproducts';
+        if(data === true){
+            alert("Producto borrado correctamente")
+        }else if(data === false){
+            alert("Usted no es el dueño de este producto")
+        }
     })
     .catch(error => {
         console.error('Error:', error);
-        window.location.href = '/realtimeproducts';
+        alert
     });
 }
 
@@ -33,7 +37,7 @@ function agregado(id){
         if (response.ok) {
             alert("Producto Agregado correctamente");
         } else {
-            alert("Hubo un error al agregar el producto");
+            alert("No puede agregar productos que usted creo");
         }
     })
     .catch(error => {

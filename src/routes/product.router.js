@@ -87,21 +87,26 @@ product.get('/realtimeproducts',auth, async (req, res) => {
   let products = ""; 
   if(type == undefined || type == ""){
      products = await productModel.paginate({},{limit:limit,page:page,sort:sort});
+     console.log(products)
   }else{
      products = await productModel.paginate({type:type},{limit:limit,page:page,sort:sort});
   }
     products.prevLink = `/realtimeproducts?type=${type}&limit=${limit}&page=${+page - 1}`;
     products.nextLink = `/realtimeproducts?type=${type}&limit=${limit}&page=${+page + 1}`;
-    console.log(products.docs[0].title)
   res.render('realtimeproducts',{products, users,idcart, style:'index.css'});
 });
 
 product.post('/realtimeproducts',auth,upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
+  let users = req.session
+  
   const { title, description, price, stock } = req.body;
   const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0].buffer : null; 
-  productManager.addProduct(title,description,price,thumbnail,stock);
-  let products = await productModel.find().lean();
   const code = productManager.generateUnicCode(); 
+  productManager.addProduct(title,description,price,thumbnail,stock,code);
+  let products = await productModel.find().lean();
+  
+  if(users.user.admin){
+    console.log('es admin')
   await productModel.create({
     title,
     description,
@@ -110,7 +115,19 @@ product.post('/realtimeproducts',auth,upload.fields([{ name: 'thumbnail', maxCou
     code,
     stock
   })
-  res.render('realtimeproducts',auth,{products, style:'index.css'});
+  res.send({status:"success", result:'product created'})
+}else if(users.user.premium){
+  console.log('es premiukm')
+  await productModel.create({
+    title,
+    description,
+    price,
+    thumbnail, 
+    code,
+    stock,
+    owner: users.user.mail
+  })
+  res.send({status:"success", result:'product created'})}
 })
 
 product.get('/realtimeproducts/:id',auth,async (req, res) => {
@@ -124,10 +141,25 @@ product.get('/realtimeproducts/:id',auth,async (req, res) => {
 }
 });
 
-product.delete('/realtimeproducts',auth, (req, res)=>{
+product.delete('/realtimeproducts',auth, async(req, res)=>{
+  let users = req.session
   let productId = req.body.id;
-  productManager.deleteProduct(productId);
-})
+  let result1 = await productModel.findOne({_id:productId}).lean()
+console.log(productId)
+console.log(result1)
+console.log(result1.owner)
+
+  if(users.user.premium && result1.owner === users.user.mail){
+      let result2 = await productModel.deleteOne({_id:productId})
+      res.send(true)
+  }else if(users.user.admin){
+    let result3 = await productModel.deleteOne({_id:productId})
+    res.send(true)
+  }else{
+    res.send(false)
+  }
+});
+
 product.delete('/realtimeproducts/:id',auth, (req, res)=>{
   let id = req.params.id;
   productManager.deleteProduct(id)

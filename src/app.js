@@ -22,7 +22,9 @@ import { generateProductsInfo } from "./services/info.js";
 import EErrors from "./services/enums.js";
 import errorHandler from './middlewares/errors/index.js'
 import { addlogger } from "./utils/loggers.js";
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
+
 const fileStorage = FileStore(session);
 export const app = express();
 dotenv.config()
@@ -38,16 +40,23 @@ const validates = new Validates();
 mongoose.connect('mongodb+srv://santiagoandini2:123@clustercorder.bht8tuu.mongodb.net/ecommerce');
 
 const socketServer = new Server(httpServer);
-
 const hbs = handlebars.create({
    runtimeOptions: {
       allowProtoPropertiesByDefault: true
    }
 })
 
+const transport = nodemailer.createTransport({
+   service: 'gmail',
+   port: 587,
+   auth:{
+      user: 'santiagoandini2@gmail.com',
+      pass:'wouf adfz dudy nxtw'
+   }
+}) 
 
 export default function auth(req,res,next){
-   if (req.session.user?.admin || req.session.user?.userRol){
+   if (req.session.user?.admin || req.session.user?.userRol || req.session.user?.premium){
       return next()
    }
    return res.status(401).send('Debes estar logueado para entrar a esta pagina')
@@ -69,9 +78,22 @@ export  function auth2(req,res,next){
        }
    });
 }
+
+function generarContrasena() {
+   const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+   let contrasena = '';
+   for (let i = 0; i < 8; i++) {
+     const indice = Math.floor(Math.random() * caracteres.length);
+     contrasena += caracteres.charAt(indice);
+   }
+   return contrasena;
+ }
+ 
 app.use(addlogger)
 app.use(cookieParser("CoderS3cR3tC0D3"))
+
 app.engine('handlebars', hbs.engine);
+
 app.use(session({
 
    store:MongoStore.create({
@@ -87,6 +109,22 @@ app.use(session({
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+console.log(__dirname)
+app.set('views',__dirname+'/views');
+app.set('view engine','handlebars');
+app.use('/',product);
+app.use('/', cookiesRouter)
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.static('src/public'));
+app.use('/api/carts', cart,);
+app.use('/api/chats', chat);
+app.use('/', router)
+app.get('/registrer',(req,res)=>{
+res.render('registrer');
+
+})
+
 
 app.get('/',(req,res)=>{
    req.logger.warn('Alerta')
@@ -101,6 +139,36 @@ app.get('/loggertest',(req,res)=>{
    req.logger.error('Esto es un error')
    res.send({message:'Error de prueba'})
 })
+
+app.get('/restaurarcontrasena' , async (req,res) =>{
+   
+   res.render('restaurarcontraseña')
+})
+app.post('/restaurarcontrasena', async (req,res) =>{
+   let users = await userModel.find().lean();
+   const mail = req.body
+   const contrasena = generarContrasena();
+   if(users.some(user => user.mail === mail.mail)){
+      let update = await userModel.updateOne({ mail: mail.mail }, { $set: { password: createHash(contrasena) } });
+      let result = await transport.sendMail({
+         from:"Coder Test santiagoandini2@gmail.com",
+         to: `${mail.mail}`,
+         subject: "Restaurar contraseña",
+         html:`
+         <div>
+            <h1>Su nueva contraseña:</h1>
+            <p>${contrasena}</p>
+         </div>
+         `,
+         attachments:[]
+      })
+      res.send({status:"succes", result:"Message sent"})
+
+   }else{
+      res.send({status:"failed", result:"User doesn't exists"})
+    }
+   
+})
 app.get('/sms',auth2 , async (req,res) =>{
    let result = await client.messages.create({
       body:"esto es un mensaje",
@@ -111,21 +179,6 @@ app.get('/sms',auth2 , async (req,res) =>{
 })
 app.get('/privado', auth, (req, res)=>{
    res.send('Si estas viendo esto es porque estas logueado')
-})
-app.set('views',__dirname+'/views');
-app.set('view engine','handlebars');
-app.use(express.static(__dirname+'/public'));
-app.use('/',product);
-app.use('/', cookiesRouter)
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(express.static('public'));
-app.use('/api/carts', cart,);
-app.use('/api/chats', chat);
-app.use('/', router)
-app.get('/registrer',(req,res)=>{
-res.render('registrer');
-
 })
 app.get('/logout',(req,res)=>{
    req.session.destroy(err=>{
@@ -140,27 +193,40 @@ app.post('/',passport.authenticate('login',{failureRedirect:'/faillogin'}), asyn
    if(!req.user) return res.status(400).send({status:"error",error:"Invalid credentials"})
 
    console.log(req.user.mail)
-   console.log(req.user.password)
-   if(req.user.mail === 'adminCoder@Coder.com')
+   console.log(req.user.role)
+   if(req.user.mail === 'adminCoder@Coder.com'){
    req.session.user = {
       name:req.user.name,
       surname: req.user.surname,
       age: req.user.age,
       mail: req.user.mail,
       admin: true,
-      userRol:false
+      userRol:false,
+      premium:false
    }
-   else{
-      console.log(req.user.mail)
-      console.log(req.user.password)
+}
+   else if(req.user.role === 'premium'){
       req.session.user = {
          name:req.user.name,
          surname: req.user.surname,
          age: req.user.age,
          mail: req.user.mail,
          admin: false,
-         userRol:true
-   }}
+         userRol:false,
+         premium:true
+      }
+   }
+   else{
+      req.session.user = {
+         name:req.user.name,
+         surname: req.user.surname,
+         age: req.user.age,
+         mail: req.user.mail,
+         admin: false,
+         userRol:true,
+         premium:false
+   }
+}
    res.redirect('/loginsuccess');
    // const {mail, password} = req.body
    // if(mail === 'adminCoder@Coder.com' || password === 'adminCod3r123'){
@@ -199,6 +265,21 @@ app.get('/mockingproducts',(req,res)=>{
    res.send({status: 'Success', payload: products})
 })
 
+
+app.get('/api/users/premium/:id',async(req,res)=>{
+const id = req.params
+let update1 = await userModel.findOne({_id: id.id})
+console.log(update1)
+
+if(update1.role === 'user'){
+   let update2 = await userModel.updateOne({ _id: id.id }, { $set: { role: 'premium' } });
+   res.send({status: 'Success', result:"Role updated to Premium"})
+}else if(update1.role === 'premium'){
+   let update3 = await userModel.updateOne({ _id: id.id }, { $set: { role: 'user' } });
+   res.send({status: 'Success', result:"Role updated to User"})
+}
+ 
+})
 app.post('/mockingproducts',(req,res)=>{
    const { title, price, description, stock } = req.body;
    console.log(title)
@@ -221,7 +302,7 @@ app.post('/mockingproducts',(req,res)=>{
    res.send({status: 'Success', payload: products})
 
 })
-// app.use(errorHandler);
+app.use(errorHandler);
 
 app.post('/registrer',passport.authenticate('register',{failureRedirect:'failregister'}), async(req,res)=>{
    
@@ -253,6 +334,8 @@ app.post('/registrer',passport.authenticate('register',{failureRedirect:'failreg
    // }
    res.redirect('/');
 })
+
+
 app.get('/failregister', async(req,res)=>{
    console.log('fail strategy');
    res.send({error:"failed"})

@@ -2,19 +2,43 @@
    <h1>Pantalla para agregar productos</h1>
 
 {{#if users.user.userRol}}
-    <p>Bienvenido Usuario  {{users.user.mail}}</p>
+    <p>Bienvenido Usuario:  {{users.user.mail}}</p>
+    {{/if}}
+    {{#if users.user.premium}}
+    <p>Bienvenido Usuario Premium: {{users.user.mail}}</p>
     {{/if}}
     {{#if users.user.admin}}
-    <p>Bienvenido Administrador  {{users.user.mail}}</p>
+    <p>Bienvenido Administrador:  {{users.user.mail}}</p>
     {{/if}}
 <button type:"button"><a style="text-decoration: none;" href="/logout">Desconectarse</a></button>
 {{#if users.user.userRol}}
 <button type:"button"><a style="text-decoration: none;" href="/api/carts">Ver Carrito</a></button>
-
-
 <button type:"button" onclick="finalizarCompra('{{idcart}}')">Finalizar compra</button>
 {{/if}}
+{{#if users.user.premium}}
+<button type:"button"><a style="text-decoration: none;" href="/api/carts">Ver Carrito</a></button>
+<button type:"button" onclick="finalizarCompra('{{idcart}}')">Finalizar compra</button>
+{{/if}}
+
 {{#if users.user.admin}} 
+
+   <form action="" method="post" enctype="multipart/form-data">
+        <label>Nombre de producto: </label> <input name="title" type="text" required/>
+        <label>Descripcion: </label> <input name="description" type="text" required/>
+        <label>Precio: </label> <input name="price" type="number" required/>
+        <label>Imágen</label> <input name="thumbnail" type="file" />
+        <label>Cantidad: </label> <input name="stock" type="number" required/>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <h2>Eliminar Producto</h2>
+
+    <form id="deleteForm">
+        <label>ID del Producto:</label><input type="text" id="productId" name="productId" required>
+        <button type="button" onclick="deleteProduct()">Eliminar Producto</button>
+    </form>
+{{/if}}
+{{#if users.user.premium}} 
 
    <form action="" method="post" enctype="multipart/form-data">
         <label>Nombre de producto: </label> <input name="title" type="text" required/>

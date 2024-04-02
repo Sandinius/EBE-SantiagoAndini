@@ -25,12 +25,12 @@ class ProductManager {
     getProducts() {
       return this.products;
     }
-  
-    addProduct( title,description,price,thumbnail,code,stock) {
+   
+    addProduct( title,description,price,thumbnail,stock,code) {
       
       if (this.products.some(product => product.code === code)) {
         throw new Error("Error: The code of the product already exists");
-      }
+      }else{
       const status = true;
       const id = this.generateUniqueId();
       const newProduct = {
@@ -48,6 +48,7 @@ class ProductManager {
       this.saveProductsToDisk(); 
   
       return newProduct; 
+    }
     }
   
     getProductById(id) {

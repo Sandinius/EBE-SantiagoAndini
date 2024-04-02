@@ -41,11 +41,14 @@ res.status(200).send({ carts });
 
 });
 
-cart.post('/:pid',auth,async(req, res) => {
+cart.post('/:pid',async(req, res) => {
+ 
   try {
+    const users = req.session.user
+
     const idprod = req.params.pid;
     const userId = req.user._id;
-
+    console.log(users.mail)
     let producto = await productModel.findOne({_id: idprod}).lean() ;
 
     console.log(producto)
@@ -55,16 +58,23 @@ cart.post('/:pid',auth,async(req, res) => {
    if (!cart) {
     cart = await cartModel.create({ user_id: userId });
   }
+console.log(producto.owner)
+if(users.mail !== producto.owner){
+  const productToAdd = { product: producto }; 
+  cart.products.push(productToAdd);
 
-    const productToAdd = { product: producto };
-    cart.products.push(productToAdd);
+  await cartModel.findOneAndUpdate({ user_id: userId }, { products: cart.products });
 
-    await cartModel.findOneAndUpdate({ user_id: userId }, { products: cart.products });
-
-    res.status(200).json({ message: "Producto agregado al carrito exitosamente." });
-  } catch (error) {
+  res.status(200).json({ message: "Producto agregado al carrito exitosamente." });
+}else{
+  res.status(500).json({message: "no puede agregar un producto que haya creado usted"})
+}
+}catch (error) {
+  
     res.status(500).json({ error: "Hubo un error al procesar la solicitud." });
-  }
+  
+}
+    
   });
 
 
