@@ -16,7 +16,7 @@ const product = Router();
 product.use(express.json());
 product.use(express.urlencoded({extended: true}));
 
-product.get('/productsview',auth,async (req, res) => {
+product.get('/productsview',async (req, res) => {
   let { type, limit, page, sort } = req.query;
   if(type == undefined){
     type = '';
@@ -166,7 +166,7 @@ product.delete('/realtimeproducts/:id',auth, (req, res)=>{
 })
 
 
-//Products Routes
+//#region Products Routes
 
 product.get('/products',auth,async (req, res) => {
   try{

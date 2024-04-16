@@ -1,0 +1,145 @@
+paths:
+  /productsview:
+    get:
+      summary: Obtiene todos los productos agregados recientemente
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron recuperados correctamente
+        "400":
+          description: los productos no se recuperaron por un error
+  /realtimeproducts:
+    get:
+      summary: Obtiene todos los productos y permite agregar y borrar en caso de ser administrador
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron recuperados correctamente
+        "400":
+          description: los productos no se recuperaron por un error
+    post:
+      summary: Permite agregar productos de realtimeproducts
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos se agregaron correctamente
+        "400":
+          description: los productos no se agregaron por un error
+    delete:
+      summary: Borra el producto que se indica
+      tags:
+        - Products
+      responses:
+        "200":
+          description: El producto fue borrado correctamente
+        "400":
+          description: El producto no fue borrado correctamente
+  /realtimeproducts/:id:
+    get:
+      summary: Obtiene un producto por su id
+      tags:
+        - Products
+      responses:
+        "200":
+          description: El producto fue recuperado correctamente
+        "400":
+          description: El producto no fue recuperado correctamente
+    delete:
+      summary: Borra el producto que se indica de el json
+      tags:
+        - Products
+      responses:
+        "200":
+          description: El producto fue borrado correctamente
+        "400":
+          description: El producto no fue borrado correctamente
+  /products:
+    get:
+      summary: Obtiene todos los productos 
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron recuperados correctamente
+        "400":
+          description: los productos no se recuperaron por un error
+    post:
+      summary: Agrega productos 
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron agregados correctamente
+        "400":
+          description: los productos no se agregados por un error
+
+  /products/:id:
+    get:
+      summary: Obtiene un producto por su id
+      tags:
+        - Products
+      responses:
+        "200":
+          description: El producto fue recuperado correctamente
+        "400":
+          description: El producto no fue recuperado correctamente
+    put:
+      summary: actualiza productos
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron actualizados correctamente
+        "400":
+          description: los productos no se actualizados por un error
+    delete:
+      summary: borra productos por id
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron borrados correctamente
+        "400":
+          description: los productos no se borrados por un error
+
+components:
+  schemas:
+    products:
+      type: object
+      properties:
+        _id:
+          type: Objectid
+          description: Id autogenerado por mongo
+        title:
+          type: String
+          description: nombre del producto
+        description: 
+          type: String
+          description: descripcion del producto
+        price:
+          type: Number
+          description: precio del producto
+        thumbnail:
+          type: Blob
+          description: imgen del producto (opcional)
+        code:
+          type: String
+          description: codigo del producto
+        stock:
+          type: Number
+          description: stock del producto
+        owner:
+          type: String
+          description: dueño del producto
+      example:
+        _id: ObjectId("wad567aw5d76aw5d76aw5d67aw576wda6tdaw")
+        title: zapatos
+        description: se usa en los pies
+        price: 4000
+        thumbnail: null
+        code: fes33
+        stock: 34
+        owner: admin

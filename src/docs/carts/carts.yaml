@@ -1,0 +1,51 @@
+paths:
+  /api/carts:
+    get:
+      summary: Obtiene el cart del usuario
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: El cart fue recuperado correctamente
+        "400":
+          description: El cart no se recupero por un error 
+  /api/carts/:pid:
+    post:
+      summary: agrega productos al carrito
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: El cart fue recuperado correctamente
+        "400":
+          description: El cart no se recupero por un error 
+  /api/carts/:cid/purchase:
+    post:
+      summary: finaliza la compra del usuario reiniciando el carrito
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: La compra fue finalizada correctamente
+        "400":
+          description: La compra fue finalizada no se finalizo por un error
+components:
+  schemas:
+    carts:
+      type: object
+      properties:
+        _id:
+          type: Objectid
+          description: Id autogenerado por mongo
+        user_id:
+          type: String
+          description: id del usuario al que pertenece el carrito
+        products: 
+          type: Array
+          description: conjunto de productos selecionados por el usuario
+
+      example:
+        _id: ObjectId("wad567aw5d76aw5d76aw5d67aw576wda6tdaw")
+        title: 254275g425vb45435v43gghvgfvty
+        products: ["vawvdtyawddt3tydv3t33423", "dgaywugdawvdwav23413423","321v312341v123v23hg12v3gh"] 
+       

@@ -24,12 +24,45 @@ import errorHandler from './middlewares/errors/index.js'
 import { addlogger } from "./utils/loggers.js";
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from 'swagger-ui-express';
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import {glob} from "glob";
+
+const __filename2 = fileURLToPath(import.meta.url);
+const __dirname2 = dirname(__filename2);
+
+// Utiliza glob para encontrar todos los archivos .yaml dentro de docs/ y sus subcarpetas
+const yamlFiles = glob.sync(`${__dirname2}/docs/**/*.yaml`);
+
+export const swaggerConfiguration = {
+  apis: yamlFiles,
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: "Documentacion del proyecto",
+      description: "Api pensada para el proyecto"
+    }
+  }
+};
+
+console.log(swaggerConfiguration.apis);
+
+const specs = swaggerJSDoc(swaggerConfiguration);
+console.log(specs);
 
 const fileStorage = FileStore(session);
 export const app = express();
 dotenv.config()
 const PORT = 8080;
+
+
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+
 const httpServer = app.listen(PORT, () => {console.log(`Server is running on port ${PORT}`);});
+
+
 
 const TWILIO_ACOUNT_SID = "AC1992b63f5665bfe7f709af310a287bd5";
 const TWILIO_AUTH_TOKEN = "5cc2ec6deec63828ff8325473cbb4f4a";
@@ -88,7 +121,6 @@ function generarContrasena() {
    }
    return contrasena;
  }
- 
 app.use(addlogger)
 app.use(cookieParser("CoderS3cR3tC0D3"))
 
@@ -109,7 +141,6 @@ app.use(session({
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
-console.log(__dirname)
 app.set('views',__dirname+'/views');
 app.set('view engine','handlebars');
 app.use('/',product);
