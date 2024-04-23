@@ -96,17 +96,46 @@ product.get('/realtimeproducts',auth, async (req, res) => {
   res.render('realtimeproducts',{products, users,idcart, style:'index.css'});
 });
 
-product.post('/realtimeproducts',auth,upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
+product.post('/realtimeproducts',upload.fields([{ name: 'thumbnail', maxCount: 1 }]) ,async (req, res) => {
   let users = req.session
-  
+  console.log(req.session)
+  let thumbnail ='';
   const { title, description, price, stock } = req.body;
-  const thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0].buffer : null; 
+  if(req.files !== undefined){
+    thumbnail = req.files['thumbnail'] ? req.files['thumbnail'][0].buffer : null;
+  }else{
+    thumbnail = null;
+  }
+   
   const code = productManager.generateUnicCode(); 
-  productManager.addProduct(title,description,price,thumbnail,stock,code);
   let products = await productModel.find().lean();
+  if(users.user !== undefined){
+    if(users.user.admin){
+      console.log('es admin')
+    await productModel.create({
+      title,
+      description,
+      price,
+      thumbnail, 
+      code,
+      stock
+    })
+    res.send({status:"success", result:'product created'})
+  }else if(users.user.premium){
+    console.log('es premium')
+    await productModel.create({
+      title,
+      description,
+      price,
+      thumbnail, 
+      code,
+      stock,
+      owner: users.user.mail
+    })
+    res.send({status:"success", result:'product created'})
+  }
   
-  if(users.user.admin){
-    console.log('es admin')
+}else{
   await productModel.create({
     title,
     description,
@@ -116,18 +145,9 @@ product.post('/realtimeproducts',auth,upload.fields([{ name: 'thumbnail', maxCou
     stock
   })
   res.send({status:"success", result:'product created'})
-}else if(users.user.premium){
-  console.log('es premiukm')
-  await productModel.create({
-    title,
-    description,
-    price,
-    thumbnail, 
-    code,
-    stock,
-    owner: users.user.mail
-  })
-  res.send({status:"success", result:'product created'})}
+  productManager.addProduct(title,description,price,thumbnail,stock,code);
+
+}
 })
 
 product.get('/realtimeproducts/:id',auth,async (req, res) => {

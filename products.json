@@ -848,5 +848,51 @@
     "thumbnail": null,
     "code": "S3OR",
     "stock": "34"
+  },
+  {
+    "id": "undefinei",
+    "title": "pulceras",
+    "description": "se ponen en los brazos",
+    "price": 1,
+    "status": true,
+    "thumbnail": null,
+    "code": "9UC3",
+    "stock": 34
+  },
+  {
+    "id": "undefinej",
+    "title": "pulceras",
+    "description": "se ponen en los brazos",
+    "price": 1,
+    "status": true,
+    "thumbnail": null,
+    "code": "XSAL",
+    "stock": 34
+  },
+  {
+    "id": "undefinek",
+    "status": true,
+    "thumbnail": null,
+    "code": "7A0T"
+  },
+  {
+    "id": "undefinel",
+    "title": "pulceras",
+    "description": "se ponen en los brazos",
+    "price": 1,
+    "status": true,
+    "thumbnail": null,
+    "code": "MI4R",
+    "stock": 34
+  },
+  {
+    "id": "undefinem",
+    "title": "pulceras",
+    "description": "se ponen en los brazos",
+    "price": 1,
+    "status": true,
+    "thumbnail": null,
+    "code": "EPEI",
+    "stock": 34
   }
 ]

@@ -16,7 +16,7 @@ function deleteProduct() {
     .then(response => response.json())
     .then(data => {
         if(data === true){
-            alert("Producto borrado correctamente")
+            alert("Producto borrado correctamente, actualice la pagina par ver los cambios")
         }else if(data === false){
             alert("Usted no es el dueño de este producto")
         }
