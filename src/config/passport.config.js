@@ -91,7 +91,12 @@ const initializePassport = () =>{
 
         passport.use('login',new LocalStrategy({usernameField:'mail'},async(username,password,done)=>{
             try{
-                const user = await userModel.findOne({mail:username})
+                let user = await userModel.findOne({mail:username});
+                if (user) {
+                    let date = new Date()
+                    toString(date)
+                    user = await userModel.findOneAndUpdate({mail:username},{last_connection:date})
+                }
                 if (!user){
                     console.log("User doesn't exist")
                     return done(null,false);

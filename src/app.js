@@ -29,7 +29,7 @@ import swaggerUiExpress from 'swagger-ui-express';
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import {glob} from "glob";
-
+import userRouter from "./routes/users.router.js";
 const __filename2 = fileURLToPath(import.meta.url);
 const __dirname2 = dirname(__filename2);
 
@@ -144,7 +144,8 @@ app.use(passport.session());
 app.set('views',__dirname+'/views');
 app.set('view engine','handlebars');
 app.use('/',product);
-app.use('/', cookiesRouter)
+app.use('/', cookiesRouter);
+app.use('/api/users',userRouter);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('src/public'));
@@ -211,11 +212,16 @@ app.get('/sms',auth2 , async (req,res) =>{
 app.get('/privado', auth, (req, res)=>{
    res.send('Si estas viendo esto es porque estas logueado')
 })
-app.get('/logout',(req,res)=>{
+app.get('/logout',async(req,res)=>{
+   let user = req.session.user;
+   console.log(user)
+   let date = new Date(); 
+   await userModel.findOneAndUpdate({mail:user.mail},{last_connection:date})
    req.session.destroy(err=>{
       if(err){
          return res.json({ status: 'Logout ERROR', body: err })
       }
+
       res.render('logout');
    })
 })
@@ -333,7 +339,7 @@ app.post('/mockingproducts',(req,res)=>{
    res.send({status: 'Success', payload: products})
 
 })
-app.use(errorHandler);
+// app.use(errorHandler);
 
 app.post('/registrer',passport.authenticate('register',{failureRedirect:'failregister'}), async(req,res)=>{
    
