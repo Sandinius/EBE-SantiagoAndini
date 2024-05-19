@@ -60,7 +60,7 @@ const PORT = 8080;
 
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
-const httpServer = app.listen(PORT, () => {console.log(`Server is running on port ${PORT}`);});
+const httpServer = app.listen(PORT,"0.0.0.0", () => {console.log(`Server is running on port ${PORT}`);});
 
 
 
