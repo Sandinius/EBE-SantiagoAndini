@@ -70,7 +70,7 @@ const TWILIO_SMS_NUMBER = "+17178645394"
 const client = twilio(TWILIO_ACOUNT_SID,TWILIO_AUTH_TOKEN)
 const validates = new Validates();
 
-mongoose.connect(process.env.Mongo_url);
+mongoose.connect(process.env.MONGO_URL);
 
 const socketServer = new Server(httpServer);
 const hbs = handlebars.create({
