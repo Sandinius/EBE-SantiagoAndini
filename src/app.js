@@ -55,7 +55,7 @@ console.log(specs);
 const fileStorage = FileStore(session);
 export const app = express();
 dotenv.config()
-const PORT = 8080;
+const PORT = process.env.PORT||8080;
 
 
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
@@ -70,7 +70,7 @@ const TWILIO_SMS_NUMBER = "+17178645394"
 const client = twilio(TWILIO_ACOUNT_SID,TWILIO_AUTH_TOKEN)
 const validates = new Validates();
 
-mongoose.connect('mongodb+srv://santiagoandini2:123@clustercorder.bht8tuu.mongodb.net/ecommerce');
+mongoose.connect(process.env.Mongo_url);
 
 const socketServer = new Server(httpServer);
 const hbs = handlebars.create({
@@ -135,7 +135,7 @@ app.engine('handlebars', hbs.engine);
 app.use(session({
 
    store:MongoStore.create({
-         mongoUrl: "mongodb+srv://santiagoandini2:123@clustercorder.bht8tuu.mongodb.net/ecommerce",
+         mongoUrl: process.env.MONGO_URL,
          mongoOptions:{useNewUrlParser:true,useUnifiedTopology:true},
          ttl:15,
    }),
