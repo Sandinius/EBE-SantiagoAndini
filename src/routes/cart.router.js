@@ -6,6 +6,7 @@ import  express  from "express";
 import auth from '../app.js';
 import { productModel } from '../dao/models/products.model.js';
 import { ticketModel } from '../dao/models/tickets.model.js';
+import { transport } from '../app.js';
 
 const cartManager = new CartManager();
 const cart = Router();
@@ -14,11 +15,7 @@ product.use(express.urlencoded({extended: true}));
 
 cart.get('/',auth,async (req, res) => {
   let users = req.session
-  console.log(users.passport.user)
-  const idprod =  '65a85ba1364948674c622d58';
-  let product = await productModel.findOne({_id: idprod}).lean() ;
-
-  console.log(product)
+  let showProducts = []
   try{
     let carts = await cartModel.find().lean();
 
@@ -29,15 +26,22 @@ cart.get('/',auth,async (req, res) => {
     await cartManager.generateCart(users.passport.user);
 
 }
-carts = await cartModel.find({user_id: users.passport.user}).lean();
+carts = await cartModel.findOne({user_id: users.passport.user}).lean();
 
-res.status(200).send({ carts });
+showProducts = await Promise.all(carts.products.map(async prod => {
+  return await productModel.findOne({ _id: prod.product }).lean();
+}));
+console.log(showProducts)
 
+const totalPrice = showProducts.reduce((sum, product) => sum + product.price, 0);
+
+res.render('cartview',{showProducts,totalPrice, style:'index.css'});
   }
   catch(error){
     console.error(error);
     res.status(400).send({message:'Carts not found'});
   }
+
 
 });
 
@@ -99,6 +103,17 @@ if(users.mail !== producto.owner){
 
     await cartModel.updateOne({ _id: idcart }, { products: [] }).lean();
 
+    let result = await transport.sendMail({
+      from:"Coder Test santiagoandini2@gmail.com",
+      to: `${usuario}`,
+      subject: "Su compra fue finalizada correctamente",
+      html:`
+      <div>
+         <p>Usted ha comprado el dia ${date}, la siguente cantidad de productos: ${largo}, con el codigo de compra: ${code}. En el caso de haber algun inconveniente comuniquese con la empresa. Saludos</p>
+      </div>
+      `,
+      attachments:[]
+   })
     res.status(200).json({ message: "Producto agregado al carrito exitosamente." });
   });
 

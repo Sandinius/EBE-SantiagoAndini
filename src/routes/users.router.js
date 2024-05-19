@@ -2,7 +2,9 @@ import { Router } from 'express';
 import  express  from "express";
 import multer from 'multer';
 import { userModel } from '../dao/models/user.model.js';
-
+import auth3 from '../app.js';
+import auth from '../app.js';
+import { transport } from '../app.js';
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -12,9 +14,56 @@ userRouter.use(express.json());
 userRouter.use(express.urlencoded({extended: true}));
 
 
+userRouter.get('/',auth3,async(req,res)=>{
+    
+    let users = await userModel.find().lean();
+    res.render('usersviews',{users});
+ 
+ })
 
+userRouter.delete('/',auth3,async(req,res)=>{
+    let userid = req.body.id;
+    console.log(userid)
+    let users = await userModel.findOne({_id: userid})
+    const lastConnectionDate = new Date(users.last_connection);
 
-userRouter.get('/premium/:id',async(req,res)=>{
+    const currentDate = new Date();
+
+    const diffTime = currentDate - lastConnectionDate;
+
+    const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+    if(diffDays > 2){
+
+        await userModel.deleteOne({_id: userid})
+        let result = await transport.sendMail({
+            from:"Coder Test santiagoandini2@gmail.com",
+            to: `${users.mail}`,
+            subject: "Su cuenta fue borrada",
+            html:`
+            <div>
+               <h1>Inactividad prolongada:</h1>
+               <p>Debido a que no se conecta hace mas de dos dias su cuenta fue borrada del sistema, saludos</p>
+            </div>
+            `,
+            attachments:[]
+         })
+        res.send(true);
+    }else{
+        res.send(false);
+    }
+ 
+ })
+
+userRouter.get('/current', auth,async(req,res)=>{
+    let users = req.session
+   console.log(users.user.userRol)
+ 
+    res.render('current',{users});
+ 
+ })
+
+userRouter.get('/premium/:id',auth3,async(req,res)=>{
     const id = req.params
     let update1 = await userModel.findOne({_id: id.id})
     console.log(update1)
@@ -50,7 +99,7 @@ userRouter.get('/premium/:id',async(req,res)=>{
     }
      
     })
-userRouter.get('/premium/:id/documents', async(req,res)=>{
+userRouter.get('/premium/:id/documents', auth3,async(req,res)=>{
     const id = req.params
     let update1 = await userModel.findOne({_id: id.id})
     if(update1){

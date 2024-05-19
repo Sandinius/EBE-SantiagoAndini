@@ -5,7 +5,8 @@ import multer from 'multer';
 import { productModel } from '../dao/models/products.model.js';
 import auth from '../app.js';
 import { cartModel } from '../dao/models/cart.model.js';
-
+import { userModel } from '../dao/models/user.model.js';
+import { transport } from '../app.js';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -168,12 +169,24 @@ product.delete('/realtimeproducts',auth, async(req, res)=>{
 console.log(productId)
 console.log(result1)
 console.log(result1.owner)
-
+let result4 = await userModel.findOne({mail:result1.owner}).lean()
+console.log(result4)
   if(users.user.premium && result1.owner === users.user.mail){
       let result2 = await productModel.deleteOne({_id:productId})
       res.send(true)
   }else if(users.user.admin){
     let result3 = await productModel.deleteOne({_id:productId})
+    let result = await transport.sendMail({
+      from:"Coder Test santiagoandini2@gmail.com",
+      to: `${result4.mail}`,
+      subject: "Su producto fue borrado",
+      html:`
+      <div>
+         <p>El producto: ${result1.title} fue borrado por un administrador</p>
+      </div>
+      `,
+      attachments:[]
+   })
     res.send(true)
   }else{
     res.send(false)

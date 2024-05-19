@@ -79,7 +79,7 @@ const hbs = handlebars.create({
    }
 })
 
-const transport = nodemailer.createTransport({
+export const transport = nodemailer.createTransport({
    service: 'gmail',
    port: 587,
    auth:{
@@ -90,6 +90,12 @@ const transport = nodemailer.createTransport({
 
 export default function auth(req,res,next){
    if (req.session.user?.admin || req.session.user?.userRol || req.session.user?.premium){
+      return next()
+   }
+   return res.status(401).send('Debes estar logueado para entrar a esta pagina')
+}
+export  function auth3(req,res,next){
+   if (req.session.user?.admin){
       return next()
    }
    return res.status(401).send('Debes estar logueado para entrar a esta pagina')
@@ -303,20 +309,9 @@ app.get('/mockingproducts',(req,res)=>{
 })
 
 
-app.get('/api/users/premium/:id',async(req,res)=>{
-const id = req.params
-let update1 = await userModel.findOne({_id: id.id})
-console.log(update1)
 
-if(update1.role === 'user'){
-   let update2 = await userModel.updateOne({ _id: id.id }, { $set: { role: 'premium' } });
-   res.send({status: 'Success', result:"Role updated to Premium"})
-}else if(update1.role === 'premium'){
-   let update3 = await userModel.updateOne({ _id: id.id }, { $set: { role: 'user' } });
-   res.send({status: 'Success', result:"Role updated to User"})
-}
  
-})
+
 app.post('/mockingproducts',(req,res)=>{
    const { title, price, description, stock } = req.body;
    console.log(title)
@@ -378,13 +373,7 @@ app.get('/failregister', async(req,res)=>{
    res.send({error:"failed"})
 })
 
-app.get('/current', auth,async(req,res)=>{
-   let users = req.session
-  console.log(users.user.userRol)
 
-   res.render('current',{users});
-
-})
 socketServer.on('connection', socket =>{
    console.log("Nuevo cliente conectado")
    

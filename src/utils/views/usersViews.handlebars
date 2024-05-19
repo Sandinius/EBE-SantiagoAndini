@@ -1,0 +1,19 @@
+    <h1>Informacion de los usuarios</h1>    
+    {{#each users }}
+
+    <div>
+        <p>Nombre: {{this.name}}</p>
+        <p>apellido: {{this.surname}}</p>
+        <p>Email: {{this.mail}}</p>
+        <p>Edad: {{this.age}}</p>
+        <p>Rol: {{this.role}}</p>
+        <button type:"button"><a style="text-decoration:none;" href="premium/{{this._id}}">Modificar Rol</a></button>
+<button onclick="deleteUsers('{{this._id}}')">Eliminar Usuario</button>
+
+    </div>
+    <hr>
+        {{/each}}
+
+    <button type:"button"><a style="text-decoration:none;" href="/realtimeproducts">Volver</a></button>
+
+<script src="/js/index.js"></script>

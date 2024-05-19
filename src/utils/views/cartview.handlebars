@@ -1,0 +1,12 @@
+    <h1>Informacion del Carrito del usuario conectado</h1>    
+        {{#each showProducts }}
+
+    <div>
+        <p>Nombre de producto: {{this.title}}</p>
+        <p>Codigo: {{this.code}}</p>
+        <p>Precio: {{this.price}}</p>
+    </div>
+    <hr>
+        {{/each}}
+        <p>Precio total a pagar: {{totalPrice}}</p>
+    <button type:"button"><a href="/realtimeproducts">Volver</a></button>
