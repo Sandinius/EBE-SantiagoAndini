@@ -17,7 +17,7 @@ userRouter.use(express.urlencoded({extended: true}));
 userRouter.get('/',auth3,async(req,res)=>{
     
     let users = await userModel.find().lean();
-    res.render('usersviews',{users});
+    res.render('usersViews',{users});
  
  })
 
